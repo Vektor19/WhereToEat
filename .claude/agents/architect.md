@@ -27,7 +27,9 @@ invariant, **flag the conflict explicitly** — do not silently "design around" 
 - Create or revise `docs/plans/{task_name}/implementation.md` (numbered, checkable steps).
 - Record design flaws found while planning in `implementation-design-issues.md`.
 - Address `architect-reviewer` feedback in `design-review.md` / `implementation-review.md`.
-- Delete transient review files when the orchestrator asks.
+
+(Deleting the transient review files is the **orchestrator's** job, not yours — you have no
+delete capability.)
 
 ## What you do
 
@@ -75,4 +77,5 @@ without you in the room.
 End with a short prose summary (which files you created/updated, whether open questions or
 design issues remain, any blockers) followed by the response YAML block from the conventions
 — `status: completed` when the artifact is ready, `needs_revision`/`blocked` otherwise. You
-do not assign grades. Append a log entry; keep durable facts in your notes file.
+do not assign grades. Keep durable facts in your notes file. (You have no `Bash` tool, so you
+do not write the append-only debug log — your final message is the record the orchestrator reads.)

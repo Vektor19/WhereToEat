@@ -29,7 +29,8 @@ Before acting, read `.claude/orchestration/conventions.md` for the shared conven
    (create the section if it is missing) — or to the relevant skill/agent file when the lesson
    is specific to one. Each learning is one or two crisp, actionable bullets. **Refine or merge
    an existing learning instead of adding a near-duplicate.**
-4. Append a log entry summarizing the reflection.
+4. You have no `Bash` tool, so you do not write the append-only debug log — the `AGENTS.md`
+   entry plus your final message are the durable record of the reflection.
 
 ## What you must NOT do
 

@@ -16,11 +16,11 @@ Everything for one task lives under `docs/plans/{task_name}/`:
 | `design.md` | architect | High-level design (source of truth) |
 | `implementation.md` | architect | Numbered, checkable steps |
 | `design-questions.md` | architect | Open questions for the user (transient) |
-| `design-review.md` | architect-reviewer | Graded design review (deleted before handover) |
-| `implementation-review.md` | architect-reviewer | Graded plan review (deleted before handover) |
+| `design-review.md` | architect-reviewer | Graded design review (deleted by the orchestrator before handover) |
+| `implementation-review.md` | architect-reviewer | Graded plan review (deleted by the orchestrator before handover) |
 | `implementation-design-issues.md` | architect | Design flaws found while planning |
-| `agents-log.md` | all subagents | Append-only debug log (never read back) |
-| `notes/{agent_name}.md` | each subagent | Concise persistent memory |
+| `agents-log.md` | developer, developer-reviewer, qa | Append-only debug log (never read back) |
+| `notes/{agent_name}.md` | subagents with Edit/Write | Concise persistent memory (optional) |
 
 `{task_name}` is a short, lowercase, hyphenated slug (e.g., `menu-parser`, `geo-distance`).
 
@@ -79,19 +79,23 @@ Status meaning:
 
 ## Logging (append-only)
 
-After each unit of work, append a log entry. Do **not** use the `Edit` tool on the log —
-run the script with `Bash`:
+Logging is **capability-gated by the `Bash` tool**. If you have `Bash` (`developer`,
+`developer-reviewer`, `qa`), append a log entry after each unit of work by running the script —
+do **not** use the `Edit` tool on the log:
 
 ```bash
 bash .claude/orchestration/append-log.sh "<task_name>" "<agent_name>" "<status>" "<message>"
 ```
 
-Agents never read `agents-log.md`; always put what matters in your response too.
+Agents **without** `Bash` (`architect`, `architect-reviewer`, `reflect`) do **not** write the
+log — their final message (and notes file) is the record. The log is debug-only and never read
+back, so put what matters in your response regardless.
 
 ## Persistent memory
 
-Store durable, concise facts in `docs/plans/{task_name}/notes/{agent_name}.md` (the `Edit`
-tool is fine here). Key facts only — no large dumps.
+Agents with `Edit`/`Write` may store durable, concise facts in
+`docs/plans/{task_name}/notes/{agent_name}.md`. Key facts only — no large dumps. This is
+optional; `developer-reviewer` (no write tools) just relies on its response.
 
 > Optional: a subagent can instead use Claude Code's native cross-task memory by adding
 > `memory: project` to its frontmatter, which gives it `.claude/agent-memory/<name>/MEMORY.md`.

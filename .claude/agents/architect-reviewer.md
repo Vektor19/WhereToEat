@@ -78,4 +78,5 @@ items. If there are any actionable items, the recommendation is `revise`.
 The orchestrator parses the grade from your **final message first**, so **start that message
 with the grade** (e.g., `Grade: B+`), then list the actionable items by severity, then state
 `approve` or `revise`, then the response YAML block — `status: completed` only when you
-recommend `approve` with no actionable items; otherwise `needs_revision`. Append a log entry.
+recommend `approve` with no actionable items; otherwise `needs_revision`. (You have no `Bash`
+tool, so you do not write the append-only debug log; your graded final message is the record.)

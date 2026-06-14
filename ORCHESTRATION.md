@@ -129,8 +129,14 @@ Claude Code accepts the aliases `opus`, `sonnet`, `haiku` (or full ids like
   `[x] done`.
 - **The reviewer is strict by design:** any suggestion → `needs_revision`; the developer fixes
   it or declines with a reason.
-- **Logging is append-only via `bash`**, never `Edit` — see the conventions file. Subagents
-  return only their final message, so they also put what matters in that message.
+- **Logging is append-only via `bash`** and **capability-gated**: only the agents that have the
+  `Bash` tool (`developer`, `developer-reviewer`, `qa`) write the log; the Bash-free agents
+  (`architect`, `architect-reviewer`, `reflect`) skip it and rely on their final message (and
+  notes). Never `Edit` the log. Subagents return only their final message, so they put what
+  matters there.
+- **Transient review files** (`design-review.md`, `implementation-review.md`) are deleted by the
+  **orchestrator** before handover — the planning-phase agents (`architect`, `architect-reviewer`)
+  have no delete capability, so the skill does this housekeeping itself.
 - **Loop-breaking:** design/plan review is capped at 3 cycles; if grades stall, the
   orchestrator asks you.
 
