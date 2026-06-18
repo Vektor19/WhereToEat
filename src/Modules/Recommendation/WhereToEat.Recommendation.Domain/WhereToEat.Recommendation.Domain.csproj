@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Recommendation Domain (Step 7): the pluggable 5-step recommendation engine from CLAUDE.md §6
+    as pure, persistence-free strategy abstractions + scoring math — match predicates (OR/AND,
+    seam for K-of-N), normalized scoring functions (f_price/f_quality/f_distance/f_coverage),
+    sort strategies (explicit-sort-dominates with coverage as a tie-breaker — invariant #5;
+    composite score for the price-quality/best modes), composable result filters, and the
+    pipeline that wires them. It is the innermost layer of the Recommendation module: it
+    references ONLY WhereToEat.SharedKernel — no ASP.NET / EF / Dapper, and crucially NO
+    Ratings.Domain (the smoothed rating crosses module lines only as a plain DTO field carried by
+    the Application candidate, never as a code reference). The Step 2 fitness tests guard this.
+  -->
+  <PropertyGroup>
+    <RootNamespace>WhereToEat.Recommendation.Domain</RootNamespace>
+    <AssemblyName>WhereToEat.Recommendation.Domain</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Shared\WhereToEat.SharedKernel\WhereToEat.SharedKernel.csproj" />
+  </ItemGroup>
+
+</Project>

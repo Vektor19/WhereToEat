@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Recommendation Infrastructure (Step 7): the concrete adapters for the recommendation module.
+    - DapperRecommendationCandidateSource hits the catalog read model + the geography radius
+      pre-filter and JOINS the materialized rating aggregate into the candidate DTO's smoothed-rating
+      field (a DB join only — NO Ratings.Domain code reference, so the cross-module fitness rule
+      stays green). Exact distance is decided in code via SharedKernel.Haversine (invariant #7).
+    - DbPriceMedianProvider reads the precomputed per-area/category median TABLE directly from the DB
+      (DB-only — NO Redis here; Step 13 adds a transparent caching decorator over the same port).
+    - The keyed DI registration (AddRecommendationModule) maps each match/sort/filter to its key so
+      a new strategy self-registers (invariant #4).
+    Uses Dapper only (NOT EF — EF is Admin.Infrastructure-only). It references its own module's
+    Domain + Application + SharedKernel + Contracts + the shared persistence block; never another
+    module's internals.
+  -->
+  <PropertyGroup>
+    <RootNamespace>WhereToEat.Recommendation.Infrastructure</RootNamespace>
+    <AssemblyName>WhereToEat.Recommendation.Infrastructure</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" />
+    <PackageReference Include="Microsoft.Data.SqlClient" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WhereToEat.Recommendation.Domain\WhereToEat.Recommendation.Domain.csproj" />
+    <ProjectReference Include="..\WhereToEat.Recommendation.Application\WhereToEat.Recommendation.Application.csproj" />
+    <ProjectReference Include="..\..\..\Shared\WhereToEat.Contracts\WhereToEat.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\Shared\WhereToEat.BuildingBlocks.Persistence\WhereToEat.BuildingBlocks.Persistence.csproj" />
+    <!-- Step 13: the transparent caching decorator over the DB-only median provider sits on the
+         shared ICacheService abstraction (a BuildingBlocks family, not another module). -->
+    <ProjectReference Include="..\..\..\Shared\WhereToEat.BuildingBlocks.Caching\WhereToEat.BuildingBlocks.Caching.csproj" />
+  </ItemGroup>
+
+</Project>

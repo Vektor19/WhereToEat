@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Containerized-SQL integration tests for the Analytics module (Step 5). Testcontainers spins up a
+    real SQL Server container per fixture, the DbUp migrations (0000-0009, incl. 0009_create_analytics
+    _events) run against it, and the append-optimized Dapper writer is asserted to round-trip an
+    anonymized event (and that no raw-id / precise-coordinate column exists by schema). Needs Docker.
+    The internal read-back helper is visible here via InternalsVisibleTo on the Infrastructure csproj.
+  -->
+  <PropertyGroup>
+    <RootNamespace>WhereToEat.Analytics.Integration</RootNamespace>
+    <AssemblyName>WhereToEat.Analytics.Integration</AssemblyName>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="coverlet.collector">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="FluentAssertions" />
+    <PackageReference Include="Dapper" />
+    <PackageReference Include="Microsoft.Data.SqlClient" />
+    <PackageReference Include="Testcontainers.MsSql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Modules\Analytics\WhereToEat.Analytics.Application\WhereToEat.Analytics.Application.csproj" />
+    <ProjectReference Include="..\..\..\src\Modules\Analytics\WhereToEat.Analytics.Domain\WhereToEat.Analytics.Domain.csproj" />
+    <ProjectReference Include="..\..\..\src\Modules\Analytics\WhereToEat.Analytics.Infrastructure\WhereToEat.Analytics.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\src\Shared\WhereToEat.BuildingBlocks.Persistence\WhereToEat.BuildingBlocks.Persistence.csproj" />
+    <ProjectReference Include="..\..\..\src\Shared\WhereToEat.BuildingBlocks.Migrations\WhereToEat.BuildingBlocks.Migrations.csproj" />
+  </ItemGroup>
+
+</Project>

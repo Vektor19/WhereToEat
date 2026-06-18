@@ -1,0 +1,55 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Worker integration tests (Step 12), Testcontainers SQL (the Quartz cluster tables + the Step 7
+    price-median table both live in the migrated schema):
+      - single-fire-under-clustering: TWO Quartz schedulers over the SAME DB store; a scheduled trigger
+        executes on exactly ONE instance (the key clustering proof);
+      - nightly median: the writer populates per-area/category medians + the city-wide fallback below N,
+        and the Step 7 DbPriceMedianProvider reads back EXACTLY those rows (DB-only, no Redis);
+      - rating recompute: the materialized aggregate matches the SharedKernel Bayesian formula.
+    These tests need Docker.
+  -->
+  <PropertyGroup>
+    <RootNamespace>WhereToEat.Worker.Integration</RootNamespace>
+    <AssemblyName>WhereToEat.Worker.Integration</AssemblyName>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="coverlet.collector">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="FluentAssertions" />
+    <PackageReference Include="Dapper" />
+    <PackageReference Include="Microsoft.Data.SqlClient" />
+    <PackageReference Include="Testcontainers.MsSql" />
+    <PackageReference Include="Quartz" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Shared\WhereToEat.BuildingBlocks.Persistence\WhereToEat.BuildingBlocks.Persistence.csproj" />
+    <ProjectReference Include="..\..\..\src\Shared\WhereToEat.BuildingBlocks.Migrations\WhereToEat.BuildingBlocks.Migrations.csproj" />
+    <ProjectReference Include="..\..\..\src\Shared\WhereToEat.SharedKernel\WhereToEat.SharedKernel.csproj" />
+    <ProjectReference Include="..\..\..\src\Shared\WhereToEat.Contracts\WhereToEat.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\src\Modules\Recommendation\WhereToEat.Recommendation.Application\WhereToEat.Recommendation.Application.csproj" />
+    <ProjectReference Include="..\..\..\src\Modules\Recommendation\WhereToEat.Recommendation.Infrastructure\WhereToEat.Recommendation.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\src\Modules\Ratings\WhereToEat.Ratings.Domain\WhereToEat.Ratings.Domain.csproj" />
+    <ProjectReference Include="..\..\..\src\Modules\Ratings\WhereToEat.Ratings.Infrastructure\WhereToEat.Ratings.Infrastructure.csproj" />
+    <!-- Step 13: the Worker host project so the DI-resolution test calls its real composition
+         (AddJobDependencies) and proves WeeklyParseJob's full dependency graph resolves (Item 2). -->
+    <ProjectReference Include="..\..\..\src\Hosts\WhereToEat.Worker\WhereToEat.Worker.csproj" />
+  </ItemGroup>
+
+</Project>

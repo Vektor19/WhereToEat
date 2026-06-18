@@ -1,0 +1,22 @@
+# syntax=docker/dockerfile:1
+#
+# Admin API host image (Step 13). A SEPARATE image/process from the public host (security isolation
+# per the design). Build from the repo root:
+#   docker build -f deploy/Dockerfile.AdminApi -t wheretoeat-admin-api .
+
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /src
+
+COPY global.json Directory.Build.props Directory.Packages.props ./
+COPY src/ ./src/
+
+RUN dotnet restore src/Hosts/WhereToEat.AdminApi/WhereToEat.AdminApi.csproj
+RUN dotnet publish src/Hosts/WhereToEat.AdminApi/WhereToEat.AdminApi.csproj \
+    -c Release -o /app/publish --no-restore /p:UseAppHost=false
+
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
+WORKDIR /app
+COPY --from=build /app/publish ./
+
+EXPOSE 8080
+ENTRYPOINT ["dotnet", "WhereToEat.AdminApi.dll"]

@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Monetization Domain (Step 5, future-facing — behavior fleshed out in Step 14). It owns the
+    VerifiedStatus + SubscriptionTier (Basic/Pro) and the Promotion/AdPlacement aggregates. Per
+    invariant #10, AdPlacement/Promotion are ALWAYS-labeled, separate slots and carry NO field that
+    feeds organic ranking (no rank/boost/weight/priority/score member) — organic ranking is not for
+    sale. The Recommendation module never references this one (a Step 14 guard test pins that).
+    Persistence-free: references ONLY WhereToEat.SharedKernel. The Step 2 dependency-direction
+    fitness test (Domain -> only SharedKernel) guards this.
+  -->
+  <PropertyGroup>
+    <RootNamespace>WhereToEat.Monetization.Domain</RootNamespace>
+    <AssemblyName>WhereToEat.Monetization.Domain</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Shared\WhereToEat.SharedKernel\WhereToEat.SharedKernel.csproj" />
+  </ItemGroup>
+
+</Project>

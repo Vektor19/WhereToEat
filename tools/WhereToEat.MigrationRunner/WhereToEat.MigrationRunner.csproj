@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Console migration-runner (Step 4): the local/CI entry point that points DbUp at the embedded
+    db/migrations scripts and applies pending ones idempotently. Hosts can also call the
+    MigrationRunner library directly on startup; this tool is the standalone "apply the schema now"
+    command (used locally and as a one-shot in compose later, Step 13).
+  -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>WhereToEat.MigrationRunner</RootNamespace>
+    <AssemblyName>WhereToEat.MigrationRunner</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Shared\WhereToEat.BuildingBlocks.Migrations\WhereToEat.BuildingBlocks.Migrations.csproj" />
+  </ItemGroup>
+
+</Project>

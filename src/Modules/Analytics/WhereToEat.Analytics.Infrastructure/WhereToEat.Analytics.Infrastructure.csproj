@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Analytics.Infrastructure (Step 5): the Dapper-backed, APPEND-OPTIMIZED writer for anonymized
+    events (IAnalyticsEventStore). Analytics is write-heavy and append-only, so the writer batches
+    inserts in one round-trip; the variable retained dimensions go into a JSON detail column. It uses
+    Dapper ONLY and NEVER EF Core (EF is Admin.Infrastructure-only — Step 2 EF-containment guards
+    this; this project is referenced by the architecture tests). It references its own Application +
+    Domain, SharedKernel (transitively), and the shared BuildingBlocks.Persistence plumbing. Step 11
+    adds the anonymization-at-ingest pipeline (Anonymizer/RotatingSaltProvider/GeohashEncoder), the
+    aggregates-only AnalyticsRollupReader, and the AddAnalyticsModule composition.
+  -->
+  <PropertyGroup>
+    <RootNamespace>WhereToEat.Analytics.Infrastructure</RootNamespace>
+    <AssemblyName>WhereToEat.Analytics.Infrastructure</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="WhereToEat.Analytics.Integration" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WhereToEat.Analytics.Application\WhereToEat.Analytics.Application.csproj" />
+    <ProjectReference Include="..\WhereToEat.Analytics.Domain\WhereToEat.Analytics.Domain.csproj" />
+    <ProjectReference Include="..\..\..\Shared\WhereToEat.BuildingBlocks.Persistence\WhereToEat.BuildingBlocks.Persistence.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Admin Application (Step 10): the admin > parser CRUD use-cases (invariant #3) — edit a menu
+    item / its price / category, edit an address (which raises the re-geocode flow), set the
+    per-MenuItem DoNotParse flag and the restaurant-level DoNotUpdate flag, and manage real photos
+    behind the Step 5 permission gate. The use-cases orchestrate over ports (the EF-backed admin
+    store + the address-changed dispatcher) so this layer holds no EF/persistence dependency —
+    Application -> Domain + SharedKernel + Contracts only (the Step 2 dependency-direction rule b).
+  -->
+  <PropertyGroup>
+    <RootNamespace>WhereToEat.Admin.Application</RootNamespace>
+    <AssemblyName>WhereToEat.Admin.Application</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Shared\WhereToEat.SharedKernel\WhereToEat.SharedKernel.csproj" />
+    <ProjectReference Include="..\..\..\Shared\WhereToEat.Contracts\WhereToEat.Contracts.csproj" />
+    <ProjectReference Include="..\WhereToEat.Admin.Domain\WhereToEat.Admin.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

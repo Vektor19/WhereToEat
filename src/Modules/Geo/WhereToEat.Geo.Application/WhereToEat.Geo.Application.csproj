@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Geo Application (Step 8): the use-case layer for geocoding. It defines the IGeocoder port
+    (address -> Result<GeoCoordinatesDto>), the GeocodeRestaurantCommand + handler that persists the
+    OSM-sourced coordinates through the Contracts ICatalogCoordinateWriter seam, and the
+    GeocodeOnAddressChangedHandler (the AddressChanged -> re-geocode wiring Step 6 deferred to here).
+    Per the layer rule it references only SharedKernel (GeoPoint/Haversine/Result) + Contracts (the
+    cross-module coordinate seam + the RestaurantAddressChanged event) + the DI abstractions; NEVER
+    another module's internals and NEVER Infrastructure or a Host. Crossing into Catalog happens ONLY
+    through the Contracts port, so the module-isolation fitness rule stays green (invariant #7: this
+    layer only ever moves an OSM-sourced coordinate; no Google lat/lng path exists).
+  -->
+  <PropertyGroup>
+    <RootNamespace>WhereToEat.Geo.Application</RootNamespace>
+    <AssemblyName>WhereToEat.Geo.Application</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Shared\WhereToEat.SharedKernel\WhereToEat.SharedKernel.csproj" />
+    <ProjectReference Include="..\..\..\Shared\WhereToEat.Contracts\WhereToEat.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>

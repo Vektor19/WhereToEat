@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Ratings.Infrastructure (Step 5): the Dapper-backed adapter that implements the Ratings domain's
+    IRatingAggregateRepository port with hand-tuned SQL over the SQL-script-owned ratings schema.
+    The per-restaurant aggregate read is a HOT PATH (the recommendation candidate source joins the
+    materialized rollup), so the query is a single keyed lookup. It uses Dapper ONLY and NEVER EF
+    Core (EF is Admin.Infrastructure-only — the Step 2 EF-containment fitness test guards this; this
+    project is referenced by the architecture tests). It references only its own Domain, SharedKernel
+    (transitively, via the Domain), and the shared BuildingBlocks.Persistence plumbing — never another
+    module's internals (module-isolation rule).
+  -->
+  <PropertyGroup>
+    <RootNamespace>WhereToEat.Ratings.Infrastructure</RootNamespace>
+    <AssemblyName>WhereToEat.Ratings.Infrastructure</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="WhereToEat.Ratings.Integration" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WhereToEat.Ratings.Domain\WhereToEat.Ratings.Domain.csproj" />
+    <ProjectReference Include="..\..\..\Shared\WhereToEat.BuildingBlocks.Persistence\WhereToEat.BuildingBlocks.Persistence.csproj" />
+  </ItemGroup>
+
+</Project>

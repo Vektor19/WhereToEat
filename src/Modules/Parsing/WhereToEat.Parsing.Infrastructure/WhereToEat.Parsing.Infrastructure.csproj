@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Parsing.Infrastructure (Step 9): the concrete adapters behind the Parsing.Application ports.
+    Two parser strategies share one IRestaurantParser contract — SeleniumParserStrategy drives a
+    HEADLESS browser via Selenium.WebDriver (behind an IWebDriverFactory seam so the e2e harness
+    injects the headless driver) for JS-rendered sites, and AngleSharpParserStrategy parses static
+    HTML in-process. The compliance gates (RobotsTxtGate, RedisHostRateLimiter, FirstPartyAllowList)
+    run BEFORE any fetch (invariant #9). The Normalizer maps raw dish names onto the canonical taxonomy
+    through the Contracts ICatalogDishResolver seam (unmappable → quarantine, invariant #2), and
+    DapperParseQuarantineStore appends to the parsing.ParseQuarantine table (Dapper, NOT EF — EF is
+    Admin.Infrastructure-only). The two Examples\* parsers are the wired-up sample restaurants. All
+    cross-module work goes through WhereToEat.Contracts — never Catalog/Geo internals.
+  -->
+  <PropertyGroup>
+    <RootNamespace>WhereToEat.Parsing.Infrastructure</RootNamespace>
+    <AssemblyName>WhereToEat.Parsing.Infrastructure</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Selenium.WebDriver" />
+    <PackageReference Include="AngleSharp" />
+    <PackageReference Include="Dapper" />
+    <PackageReference Include="Microsoft.Data.SqlClient" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+    <PackageReference Include="Microsoft.Extensions.Http" />
+    <PackageReference Include="Microsoft.Extensions.Options" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WhereToEat.Parsing.Domain\WhereToEat.Parsing.Domain.csproj" />
+    <ProjectReference Include="..\WhereToEat.Parsing.Application\WhereToEat.Parsing.Application.csproj" />
+    <ProjectReference Include="..\..\..\Shared\WhereToEat.SharedKernel\WhereToEat.SharedKernel.csproj" />
+    <ProjectReference Include="..\..\..\Shared\WhereToEat.Contracts\WhereToEat.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\Shared\WhereToEat.BuildingBlocks.Persistence\WhereToEat.BuildingBlocks.Persistence.csproj" />
+  </ItemGroup>
+
+</Project>

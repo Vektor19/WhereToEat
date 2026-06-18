@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Worker unit tests (Step 12): the no-container gate for the worker's pure logic — the
+    PriceMedianCalculator (per-area vs. city-wide fallback selection, median math) and the JobSchedule
+    cron wiring (the four jobs are scheduled on their declared crons under the worker group). The
+    clustered-Quartz / median-write / rating-recompute behaviours that need a real DB live in the
+    Worker integration project.
+  -->
+  <PropertyGroup>
+    <RootNamespace>WhereToEat.Worker.UnitTests</RootNamespace>
+    <AssemblyName>WhereToEat.Worker.UnitTests</AssemblyName>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="coverlet.collector">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="FluentAssertions" />
+    <PackageReference Include="Quartz" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- The worker host (JobSchedule + jobs) and the recommendation infra (PriceMedianCalculator). -->
+    <ProjectReference Include="..\..\..\src\Hosts\WhereToEat.Worker\WhereToEat.Worker.csproj" />
+    <ProjectReference Include="..\..\..\src\Modules\Recommendation\WhereToEat.Recommendation.Infrastructure\WhereToEat.Recommendation.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Unit tests for the Analytics domain (Step 5): anonymization value-object construction — the
+       retain/hash/drop shape (coarse geohash precision cap, hashed actor id non-reversibility,
+       hour-truncated time, retained dimensions) and the AnalyticsEvent aggregate. -->
+  <PropertyGroup>
+    <RootNamespace>WhereToEat.Analytics.Domain.UnitTests</RootNamespace>
+    <AssemblyName>WhereToEat.Analytics.Domain.UnitTests</AssemblyName>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="coverlet.collector">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="FluentAssertions" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Modules\Analytics\WhereToEat.Analytics.Domain\WhereToEat.Analytics.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

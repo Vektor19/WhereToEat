@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Recommendation Domain unit tests (Step 7) — the CORE GATE for the engine. Table-driven tests
+    prove the invariants the recommendation pipeline must hold: explicit-sort-dominates with coverage
+    as a tie-breaker across price/distance/rating (invariant #5); composite-score ordering + weight
+    sensitivity; OR/AND selection + coverage; the pluggability of a keyed strategy added with no
+    pipeline change; and f_quality/rating consuming the candidate's smoothed-rating field with NO
+    Ratings.Domain involved. Pure domain — no DB, no container.
+  -->
+  <PropertyGroup>
+    <RootNamespace>WhereToEat.Recommendation.Domain.UnitTests</RootNamespace>
+    <AssemblyName>WhereToEat.Recommendation.Domain.UnitTests</AssemblyName>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="coverlet.collector">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="FluentAssertions" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Modules\Recommendation\WhereToEat.Recommendation.Domain\WhereToEat.Recommendation.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

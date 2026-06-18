@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Monetization.Application (Step 14, future-facing — no real billing, a non-goal). The grant/revoke
+    Verified + create-labeled-ad use-cases, plus the IPaymentGateway seam (the SOLE payment
+    touch-point; its only implementation is the dev no-op in Infrastructure). Per invariant #10 these
+    use-cases never feed organic ranking, and per §5.8 they never touch the always-free contact links;
+    granting Verified only flips the Step 5 real-photo permission gate + sets the tier. Per the layer
+    rule it references only its own Domain + SharedKernel (+ Logging/DI abstractions); NEVER
+    Infrastructure or a Host (the Step 2 fitness test guards this).
+  -->
+  <PropertyGroup>
+    <RootNamespace>WhereToEat.Monetization.Application</RootNamespace>
+    <AssemblyName>WhereToEat.Monetization.Application</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WhereToEat.Monetization.Domain\WhereToEat.Monetization.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

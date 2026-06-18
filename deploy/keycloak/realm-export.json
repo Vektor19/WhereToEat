@@ -1,0 +1,110 @@
+{
+  "realm": "wheretoeat",
+  "enabled": true,
+  "displayName": "WhereToEat / ДеПоїсти (dev)",
+  "sslRequired": "none",
+  "registrationAllowed": false,
+  "accessTokenLifespan": 3600,
+  "roles": {
+    "realm": [
+      {
+        "name": "admin",
+        "description": "WhereToEat administrator — admin API CRUD, protection flags, monetization (Steps 10/14). Satisfies the AdminAuthorization admin-only policy."
+      },
+      {
+        "name": "user",
+        "description": "Regular authenticated end user — can rate, save selections. Does NOT satisfy the admin-only policy."
+      }
+    ]
+  },
+  "clientScopes": [
+    {
+      "name": "admin",
+      "description": "Scope granting administrator access to the WhereToEat admin API.",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "true",
+        "display.on.consent.screen": "false"
+      }
+    },
+    {
+      "name": "user",
+      "description": "Scope for a regular authenticated WhereToEat user.",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "true",
+        "display.on.consent.screen": "false"
+      }
+    }
+  ],
+  "clients": [
+    {
+      "clientId": "wheretoeat-api",
+      "name": "WhereToEat API hosts (public + admin)",
+      "description": "The resource-server client the public + admin API hosts validate tokens for. The hosts never issue tokens; they validate Keycloak-issued JWTs against this realm's JWKS.",
+      "enabled": true,
+      "publicClient": false,
+      "secret": "wheretoeat-api-dev-secret",
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": false,
+      "redirectUris": [
+        "http://localhost:8080/*",
+        "http://localhost:8081/*"
+      ],
+      "webOrigins": ["*"],
+      "defaultClientScopes": ["roles", "profile", "email"],
+      "optionalClientScopes": ["admin", "user"],
+      "protocolMappers": [
+        {
+          "name": "realm roles -> role claim",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-realm-role-mapper",
+          "consentRequired": false,
+          "config": {
+            "multivalued": "true",
+            "userinfo.token.claim": "true",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "role",
+            "jsonType.label": "String"
+          }
+        }
+      ]
+    }
+  ],
+  "users": [
+    {
+      "username": "admin-test",
+      "email": "admin-test@wheretoeat.example",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Admin",
+      "lastName": "Test",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "admin-test-password",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["admin", "user"]
+    },
+    {
+      "username": "user-test",
+      "email": "user-test@wheretoeat.example",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "User",
+      "lastName": "Test",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "user-test-password",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["user"]
+    }
+  ]
+}

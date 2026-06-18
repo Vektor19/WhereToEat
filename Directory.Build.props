@@ -1,0 +1,31 @@
+<Project>
+
+  <!--
+    Central MSBuild properties for the WhereToEat / ДеПоїсти backend.
+    Pulled in automatically by every project under the repo root, so individual
+    .csproj files stay minimal. See docs/plans/backend-foundation/implementation.md (Step 1).
+  -->
+  <PropertyGroup>
+    <!-- .NET 8 LTS for the whole solution (pinned alongside global.json SDK 8.0.417). -->
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+
+    <!-- Treat every warning as an error so boundary/quality erosion fails the build. -->
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningLevel>9999</WarningLevel>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+
+    <!-- .NET analyzers on, latest recommended ruleset. -->
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <AnalysisLevel>latest-recommended</AnalysisLevel>
+    <AnalysisMode>Recommended</AnalysisMode>
+
+    <!-- Deterministic, reproducible builds. -->
+    <Deterministic>true</Deterministic>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn)</NoWarn>
+  </PropertyGroup>
+
+</Project>

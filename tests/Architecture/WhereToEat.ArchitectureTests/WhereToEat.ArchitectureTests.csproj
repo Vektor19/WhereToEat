@@ -1,0 +1,126 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Architecture-fitness tests (Step 2). These are build-failing guards that mechanically
+    enforce the modular-monolith boundaries the design commits to: dependency direction
+    (Domain → nothing but SharedKernel; Application → no Infrastructure/Host), EF containment
+    (EF Core only inside Admin.Infrastructure), and module isolation (modules reach each other
+    only through WhereToEat.Contracts). Those four rule families are driven by NetArchTest.Rules
+    (its fluent ShouldNot().HaveDependencyOn... API over the loaded assemblies); the MassTransit
+    consumer-to-contract structural scan and the ModuleGrouping helper stay on System.Reflection.
+
+    The rules discover the solution's assemblies by naming convention at runtime
+    (every WhereToEat.* assembly in the build output), so the same tests grow automatically
+    as later steps add modules. To make a module's assembly land next to this test assembly,
+    later steps add a ProjectReference here; today only SharedKernel + Contracts exist.
+  -->
+  <PropertyGroup>
+    <RootNamespace>WhereToEat.ArchitectureTests</RootNamespace>
+    <AssemblyName>WhereToEat.ArchitectureTests</AssemblyName>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="coverlet.collector">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="FluentAssertions" />
+    <PackageReference Include="NetArchTest.Rules" />
+  </ItemGroup>
+
+  <!--
+    Reference every solution assembly the fitness rules must inspect so it is copied into
+    this project's output (NetArchTest loads assemblies from the output folder). Each later
+    step adds its module assemblies here; the convention-based loader then guards them.
+  -->
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Shared\WhereToEat.SharedKernel\WhereToEat.SharedKernel.csproj" />
+    <ProjectReference Include="..\..\..\src\Shared\WhereToEat.Contracts\WhereToEat.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\src\Modules\Catalog\WhereToEat.Catalog.Domain\WhereToEat.Catalog.Domain.csproj" />
+    <!-- Step 4: the Dapper data layer. The fitness rules must evaluate it — it MUST depend only
+         inward (Infrastructure → Domain/SharedKernel + the BuildingBlocks.Persistence shared block)
+         and use Dapper, NOT EF Core (the EF-containment rule allows EF only in Admin.Infrastructure). -->
+    <ProjectReference Include="..\..\..\src\Modules\Catalog\WhereToEat.Catalog.Infrastructure\WhereToEat.Catalog.Infrastructure.csproj" />
+    <!-- Step 6: the Catalog Application + the Catalog.Search Application sub-module. The fitness
+         rules must evaluate them — Application depends only inward (Domain/SharedKernel, NEVER
+         Infrastructure/Host — rule b), and the Catalog.Search.* ↔ Catalog.* reference is same-module
+         (rule d treats WhereToEat.Catalog.Search.* as the Catalog module), so module-isolation stays
+         green. The BuildingBlocks.Auth shared block is not a module (it carries no module identity). -->
+    <ProjectReference Include="..\..\..\src\Modules\Catalog\WhereToEat.Catalog.Application\WhereToEat.Catalog.Application.csproj" />
+    <ProjectReference Include="..\..\..\src\Modules\Catalog\WhereToEat.Catalog.Search.Application\WhereToEat.Catalog.Search.Application.csproj" />
+    <!-- Step 5: the remaining module Domain + Infrastructure assemblies. With multiple modules now
+         present, the module-isolation rule (d) becomes non-vacuous — these must reference each other
+         ONLY via WhereToEat.Contracts, never another module's internals. Each Domain must depend only
+         on SharedKernel; each Infrastructure uses Dapper (NOT EF — EF is Admin.Infrastructure-only,
+         which does not exist yet, so EF-containment stays vacuously green). -->
+    <ProjectReference Include="..\..\..\src\Modules\Ratings\WhereToEat.Ratings.Domain\WhereToEat.Ratings.Domain.csproj" />
+    <ProjectReference Include="..\..\..\src\Modules\Ratings\WhereToEat.Ratings.Infrastructure\WhereToEat.Ratings.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\src\Modules\Users\WhereToEat.Users.Domain\WhereToEat.Users.Domain.csproj" />
+    <ProjectReference Include="..\..\..\src\Modules\Monetization\WhereToEat.Monetization.Domain\WhereToEat.Monetization.Domain.csproj" />
+    <!-- Step 14: the Monetization module's Application + Infrastructure (Domain wired in Step 5). The
+         fitness rules MUST evaluate them — module-isolation (d) now proves WhereToEat.Recommendation.*
+         has NO reference to WhereToEat.Monetization.* (organic ranking is not for sale, invariant #10),
+         and the dedicated RecommendationDoesNotDependOnMonetization guard test pins that explicitly.
+         Monetization.Application → no Infrastructure/Host (rule b); Monetization.Infrastructure uses
+         Dapper (NOT EF — EF-containment green, EF is Admin.Infrastructure-only). -->
+    <ProjectReference Include="..\..\..\src\Modules\Monetization\WhereToEat.Monetization.Application\WhereToEat.Monetization.Application.csproj" />
+    <ProjectReference Include="..\..\..\src\Modules\Monetization\WhereToEat.Monetization.Infrastructure\WhereToEat.Monetization.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\src\Modules\Admin\WhereToEat.Admin.Domain\WhereToEat.Admin.Domain.csproj" />
+    <ProjectReference Include="..\..\..\src\Modules\Analytics\WhereToEat.Analytics.Domain\WhereToEat.Analytics.Domain.csproj" />
+    <!-- Step 11: the Analytics ingest Application layer. The fitness rules MUST evaluate it —
+         Application depends only inward (its own Domain + SharedKernel, NEVER Infrastructure/Host —
+         rule b), and module-isolation (d) proves WhereToEat.Analytics.* never references another
+         module's internals. The Infrastructure below uses Dapper (NOT EF — EF-containment green). -->
+    <ProjectReference Include="..\..\..\src\Modules\Analytics\WhereToEat.Analytics.Application\WhereToEat.Analytics.Application.csproj" />
+    <ProjectReference Include="..\..\..\src\Modules\Analytics\WhereToEat.Analytics.Infrastructure\WhereToEat.Analytics.Infrastructure.csproj" />
+    <!-- Step 7: the Recommendation module's three layers. The fitness rules MUST evaluate them —
+         especially the module-isolation rule (d), which now proves WhereToEat.Recommendation.*
+         has NO reference to WhereToEat.Ratings.* (the smoothed rating crosses only as a DTO field
+         via a DB join, never a code reference into Ratings.Domain). Domain → only SharedKernel;
+         Application → no Infrastructure/Host; Infrastructure uses Dapper (NOT EF). -->
+    <ProjectReference Include="..\..\..\src\Modules\Recommendation\WhereToEat.Recommendation.Domain\WhereToEat.Recommendation.Domain.csproj" />
+    <ProjectReference Include="..\..\..\src\Modules\Recommendation\WhereToEat.Recommendation.Application\WhereToEat.Recommendation.Application.csproj" />
+    <ProjectReference Include="..\..\..\src\Modules\Recommendation\WhereToEat.Recommendation.Infrastructure\WhereToEat.Recommendation.Infrastructure.csproj" />
+    <!-- Step 8: the Geo module's Application + Infrastructure. The fitness rules MUST evaluate them —
+         module-isolation rule (d) proves WhereToEat.Geo.* has NO reference to WhereToEat.Catalog.*
+         (Geo re-geocodes through the Contracts ICatalogCoordinateWriter seam, never into Catalog
+         internals). Geo.Application depends only inward (SharedKernel + Contracts, NOT Infrastructure/
+         Host — rule b); Geo.Infrastructure uses an HttpClient + Polly, NOT EF (EF-containment green). -->
+    <ProjectReference Include="..\..\..\src\Modules\Geo\WhereToEat.Geo.Application\WhereToEat.Geo.Application.csproj" />
+    <ProjectReference Include="..\..\..\src\Modules\Geo\WhereToEat.Geo.Infrastructure\WhereToEat.Geo.Infrastructure.csproj" />
+    <!-- Step 9: the Parsing module's three layers. The fitness rules MUST evaluate them —
+         module-isolation rule (d) proves WhereToEat.Parsing.* reaches Catalog/Geo ONLY through
+         WhereToEat.Contracts seams (ICatalogDishResolver/ICatalogMenuWriter/IRestaurantGeocoder),
+         never into another module's internals. Parsing.Domain → only SharedKernel; Parsing.Application
+         → no Infrastructure/Host (rule b); Parsing.Infrastructure uses Selenium/AngleSharp + Dapper,
+         NOT EF (EF-containment green — EF is Admin.Infrastructure-only). -->
+    <ProjectReference Include="..\..\..\src\Modules\Parsing\WhereToEat.Parsing.Domain\WhereToEat.Parsing.Domain.csproj" />
+    <ProjectReference Include="..\..\..\src\Modules\Parsing\WhereToEat.Parsing.Application\WhereToEat.Parsing.Application.csproj" />
+    <ProjectReference Include="..\..\..\src\Modules\Parsing\WhereToEat.Parsing.Infrastructure\WhereToEat.Parsing.Infrastructure.csproj" />
+    <!-- Step 10: the Admin module's Application + Infrastructure (Admin.Domain was wired in Step 5).
+         The EF-containment rule (c) now BITES FOR REAL — it must pass with EF present, proving EF Core
+         is referenced ONLY by WhereToEat.Admin.Infrastructure. Module-isolation (d) proves Admin.* has
+         NO reference to Catalog/Geo internals (Admin maps the shared tables with its OWN EF entities;
+         cross-module work goes through WhereToEat.Contracts). Admin.Application → no Infrastructure/Host
+         (rule b); Admin.Domain → only SharedKernel (rule a). -->
+    <ProjectReference Include="..\..\..\src\Modules\Admin\WhereToEat.Admin.Application\WhereToEat.Admin.Application.csproj" />
+    <ProjectReference Include="..\..\..\src\Modules\Admin\WhereToEat.Admin.Infrastructure\WhereToEat.Admin.Infrastructure.csproj" />
+    <!-- Step 13: the cross-cutting shared building blocks. They are shared families (not modules), so
+         the cross-module rules skip them, but the EF-containment rule (c) still applies — none of them
+         may reference EF Core (EF stays Admin.Infrastructure-only). The MassTransit consumers live in
+         BuildingBlocks.Messaging and reference ONLY Contracts + BuildingBlocks.Caching (both shared
+         families), so the consumer-to-contract rule (e) stays green. -->
+    <ProjectReference Include="..\..\..\src\Shared\WhereToEat.BuildingBlocks.Caching\WhereToEat.BuildingBlocks.Caching.csproj" />
+    <ProjectReference Include="..\..\..\src\Shared\WhereToEat.BuildingBlocks.Messaging\WhereToEat.BuildingBlocks.Messaging.csproj" />
+    <ProjectReference Include="..\..\..\src\Shared\WhereToEat.BuildingBlocks.Observability\WhereToEat.BuildingBlocks.Observability.csproj" />
+  </ItemGroup>
+
+</Project>

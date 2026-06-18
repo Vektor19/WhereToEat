@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Containerized-SQL integration tests (Step 4). Testcontainers spins up a real SQL Server
+    container per fixture, the DbUp migrations run against it, and the Dapper data layer is asserted
+    end-to-end: schema + spatial index creation, aggregate round-trip, and the geography radius
+    pre-filter narrowing candidates that Haversine then orders. These tests need Docker.
+  -->
+  <PropertyGroup>
+    <RootNamespace>WhereToEat.Catalog.Integration</RootNamespace>
+    <AssemblyName>WhereToEat.Catalog.Integration</AssemblyName>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="coverlet.collector">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="FluentAssertions" />
+    <PackageReference Include="Dapper" />
+    <PackageReference Include="Microsoft.Data.SqlClient" />
+    <PackageReference Include="Testcontainers.MsSql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Modules\Catalog\WhereToEat.Catalog.Domain\WhereToEat.Catalog.Domain.csproj" />
+    <ProjectReference Include="..\..\..\src\Modules\Catalog\WhereToEat.Catalog.Infrastructure\WhereToEat.Catalog.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\src\Shared\WhereToEat.BuildingBlocks.Persistence\WhereToEat.BuildingBlocks.Persistence.csproj" />
+    <ProjectReference Include="..\..\..\src\Shared\WhereToEat.BuildingBlocks.Migrations\WhereToEat.BuildingBlocks.Migrations.csproj" />
+  </ItemGroup>
+
+</Project>

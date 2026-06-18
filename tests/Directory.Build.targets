@@ -1,0 +1,18 @@
+<Project>
+
+  <!--
+    Step 13 (Item B): copy the shared tests/xunit.runner.json into EVERY test project's output so the
+    xunit runner picks it up (it disables intra-assembly parallel collections). Paired with the
+    solution-level tests/WhereToEat.runsettings (MaxCpuCount=1, which serializes assembly-level
+    execution), the full `dotnet test src/WhereToEat.sln` run no longer flakes on parallel Testcontainers
+    startup. Kept in a tests-scoped Directory.Build.targets so it applies to all test projects without
+    editing each csproj individually.
+  -->
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)xunit.runner.json"
+          Link="xunit.runner.json"
+          CopyToOutputDirectory="PreserveNewest"
+          Visible="false" />
+  </ItemGroup>
+
+</Project>

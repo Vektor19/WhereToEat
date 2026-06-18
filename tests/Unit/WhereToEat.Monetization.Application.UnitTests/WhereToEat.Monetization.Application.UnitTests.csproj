@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Unit tests for the Monetization Application + Infrastructure (Step 14): the grant/revoke-Verified
+    and create-labeled-ad use-cases drive their domain effects (photo gate / tier; always-labeled ad)
+    WITHOUT touching organic ranking (invariant #10) or the contact links (§5.8); payment runs strictly
+    through the IPaymentGateway seam (a rejecting gateway blocks the grant — proving the seam is the
+    single touch-point), and the dev NoOpPaymentGateway always authorizes without a provider. References
+    a test double for the repos (NSubstitute) and the REAL no-op gateway from Infrastructure.
+  -->
+  <PropertyGroup>
+    <RootNamespace>WhereToEat.Monetization.Application.UnitTests</RootNamespace>
+    <AssemblyName>WhereToEat.Monetization.Application.UnitTests</AssemblyName>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="coverlet.collector">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="FluentAssertions" />
+    <PackageReference Include="NSubstitute" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Modules\Monetization\WhereToEat.Monetization.Application\WhereToEat.Monetization.Application.csproj" />
+    <ProjectReference Include="..\..\..\src\Modules\Monetization\WhereToEat.Monetization.Infrastructure\WhereToEat.Monetization.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,50 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <!--
+    Public API integration tests (Step 6): drive the host in-process via WebApplicationFactory with
+    a real SQL Server (Testcontainers) behind it. They assert the catalog/search endpoint contracts,
+    that restaurant details always include contact links (§5.8), that the Map endpoint echoes ONLY
+    stored DB fields (and the "no map payload" shape, with no geocoder to invoke), and the OIDC
+    401/200 behaviour using a test signing key (no live IdP). Uses the SDK.Web so WebApplicationFactory
+    resolves the host's content root and shared framework.
+  -->
+  <PropertyGroup>
+    <RootNamespace>WhereToEat.PublicApi.Integration</RootNamespace>
+    <AssemblyName>WhereToEat.PublicApi.Integration</AssemblyName>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="coverlet.collector">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="FluentAssertions" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" />
+    <PackageReference Include="Dapper" />
+    <PackageReference Include="Microsoft.Data.SqlClient" />
+    <PackageReference Include="Testcontainers.MsSql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Hosts\WhereToEat.PublicApi\WhereToEat.PublicApi.csproj" />
+    <ProjectReference Include="..\..\..\src\Shared\WhereToEat.BuildingBlocks.Migrations\WhereToEat.BuildingBlocks.Migrations.csproj" />
+    <!-- The fixture injects the Dev/Testing-only test signing key through the OidcOptions section
+         key (AuthServiceCollectionExtensions.TestSigningKeyConfigKey), so it needs the Auth seam. -->
+    <ProjectReference Include="..\..\..\src\Shared\WhereToEat.BuildingBlocks.Auth\WhereToEat.BuildingBlocks.Auth.csproj" />
+    <!-- The cache privacy guard test (§5.7 / invariant #6/#7) wires a recording ICacheService spy
+         through the Map endpoint path and asserts it is never touched, and statically inspects
+         CacheKeys for any Google-shaped key. -->
+    <ProjectReference Include="..\..\..\src\Shared\WhereToEat.BuildingBlocks.Caching\WhereToEat.BuildingBlocks.Caching.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -2,7 +2,7 @@
 name: developer
 description: Implements code for a single implementation step, writes unit and integration tests, and follows SOLID and DRY. Use during implementation to build a step or to fix issues raised by review or QA.
 tools: Read, Grep, Glob, Edit, Write, Bash
-model: sonnet
+model: opus
 ---
 
 You implement code for **ONE implementation step at a time**, with clean structure, tests, and

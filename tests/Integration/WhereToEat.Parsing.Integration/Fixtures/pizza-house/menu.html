@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<!--
+  Pinned local fixture for the Pizza House AngleSharp integration test (Step 9). Static HTML (no JS),
+  parsed in-process by AngleSharp over a file:// URL — CI-stable, never the live site. It follows the
+  SAME MenuHtmlConvention as the Borsch Cafe Selenium fixture, so the integration test asserts the
+  same normalized ParsedMenu contract the e2e test asserts (one contract, two strategy kinds).
+-->
+<html lang="uk">
+<head><meta charset="utf-8"><title>Pizza House — Меню</title></head>
+<body>
+  <main data-restaurant
+        data-name="Pizza House"
+        data-address="вул. Сагайдачного, 12"
+        data-city="Київ"
+        data-currency="UAH">
+
+    <nav>
+      <a data-contact="website" href="https://pizza-house.example">pizza-house.example</a>
+      <a data-contact="social" href="https://t.me/pizzahouse">Telegram</a>
+    </nav>
+
+    <section class="menu">
+      <div data-dish data-category="Фаст-фуд">
+        <span class="name">Піца Маргарита</span>
+        <span class="price">180,00</span>
+        <span class="weight">450 г</span>
+      </div>
+      <div data-dish data-category="Фаст-фуд">
+        <span class="name">Картопля фрі</span>
+        <span class="price">75</span>
+        <span class="weight">150 г</span>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

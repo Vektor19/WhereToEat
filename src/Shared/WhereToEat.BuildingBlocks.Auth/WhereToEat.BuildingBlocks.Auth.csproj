@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    BuildingBlocks.Auth (Step 6): the shared OIDC resource-server auth seam. It configures JWT
+    bearer validation against an EXTERNAL IdP's authority/JWKS — we validate tokens, we never issue
+    them (no home-grown token issuance). The identity seam (IIdentityContext + a claims→role mapper)
+    keeps the IdP swappable: hosts depend on the abstraction, not on a concrete provider. Public read
+    endpoints stay anonymous; the seam is in place for the later authenticated endpoints (ratings).
+    A shared building block, not a module — it has no namespace-first-segment module identity.
+  -->
+  <PropertyGroup>
+    <RootNamespace>WhereToEat.BuildingBlocks.Auth</RootNamespace>
+    <AssemblyName>WhereToEat.BuildingBlocks.Auth</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
+  </ItemGroup>
+
+</Project>

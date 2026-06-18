@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Unit tests for the Monetization domain (Step 5): VerifiedStatus/tier behaviour, and the
+       labeled-ad invariant (#10) — AdPlacement/Promotion are always labeled and expose NO field that
+       could feed organic ranking (verified by a reflection scan of the public surface). -->
+  <PropertyGroup>
+    <RootNamespace>WhereToEat.Monetization.Domain.UnitTests</RootNamespace>
+    <AssemblyName>WhereToEat.Monetization.Domain.UnitTests</AssemblyName>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="coverlet.collector">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="FluentAssertions" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Modules\Monetization\WhereToEat.Monetization.Domain\WhereToEat.Monetization.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

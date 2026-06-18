@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    BuildingBlocks.Migrations (Step 4): the DbUp-based migration runner. DbUp was chosen as the
+    runner (lightweight, script-first, no schema generation) precisely because the SQL scripts are
+    the schema-of-record. The versioned scripts under db/migrations are embedded as resources here
+    so the runner applies them deterministically regardless of the process's working directory
+    (the console host and any host-startup call both run the SAME embedded scripts). DbUp tracks
+    applied scripts in a journal table, so re-running is idempotent / a no-op.
+
+    A shared building block (not a module): hosts/tools may reference it. No EF Core.
+  -->
+  <PropertyGroup>
+    <RootNamespace>WhereToEat.BuildingBlocks.Migrations</RootNamespace>
+    <AssemblyName>WhereToEat.BuildingBlocks.Migrations</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="dbup-sqlserver" />
+  </ItemGroup>
+
+  <!--
+    Embed every versioned SQL script (the schema-of-record under repo-root db/migrations) into
+    this assembly under a stable resource prefix, ordered by file name so DbUp applies them in
+    numeric order (0000, 0001, …). Link keeps them browsable at their real db/migrations path.
+  -->
+  <ItemGroup>
+    <EmbeddedResource Include="..\..\..\db\migrations\*.sql">
+      <LogicalName>WhereToEat.Migrations.Scripts.%(Filename)%(Extension)</LogicalName>
+      <Link>Scripts\%(Filename)%(Extension)</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>

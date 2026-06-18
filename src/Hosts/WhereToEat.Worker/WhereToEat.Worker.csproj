@@ -1,0 +1,69 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <!--
+    Worker host (Step 12): its OWN composition root, SEPARATELY DEPLOYABLE so the background work
+    (parsing/geocoding/median/rating recompute) never competes with request-serving (the design's
+    "parsing never competes with the request path"). It hosts Quartz.NET via Quartz.Extensions.Hosting
+    with a CLUSTERED, DB-backed (SQL Server AdoJobStore) job store, so that with several worker
+    replicas pointed at the same DB a scheduled trigger fires on EXACTLY ONE replica.
+
+    As a Host it is one of the places allowed to reference module Application/Infrastructure for
+    composition (it calls each module's AddXxxModule / persistence registration). Cross-module work
+    still goes through the existing Contracts seams; the host never reaches into another module's
+    Domain internals beyond its own composition.
+  -->
+  <PropertyGroup>
+    <RootNamespace>WhereToEat.Worker</RootNamespace>
+    <AssemblyName>WhereToEat.Worker</AssemblyName>
+    <UserSecretsId>wheretoeat-worker</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Quartz" />
+    <PackageReference Include="Quartz.Extensions.Hosting" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- The migration runner so the worker applies the schema-of-record scripts (incl. 0013 Quartz
+         cluster tables) on startup, the same embedded scripts every host runs. -->
+    <ProjectReference Include="..\..\Shared\WhereToEat.BuildingBlocks.Migrations\WhereToEat.BuildingBlocks.Migrations.csproj" />
+    <ProjectReference Include="..\..\Shared\WhereToEat.BuildingBlocks.Persistence\WhereToEat.BuildingBlocks.Persistence.csproj" />
+    <ProjectReference Include="..\..\Shared\WhereToEat.Contracts\WhereToEat.Contracts.csproj" />
+
+    <!-- (1) Weekly parse — delegates to the Step 9 RunParseCommandHandler (compliance + admin-protected
+         persist already enforced there). The Geo module supplies the geocoder the parse + geocode-refresh
+         jobs use. -->
+    <ProjectReference Include="..\..\Modules\Parsing\WhereToEat.Parsing.Application\WhereToEat.Parsing.Application.csproj" />
+    <ProjectReference Include="..\..\Modules\Parsing\WhereToEat.Parsing.Infrastructure\WhereToEat.Parsing.Infrastructure.csproj" />
+
+    <!-- (2) Geocode refresh — drains queued geocode work via the Step 8 geocoder + AddressChanged seam. -->
+    <ProjectReference Include="..\..\Modules\Geo\WhereToEat.Geo.Application\WhereToEat.Geo.Application.csproj" />
+    <ProjectReference Include="..\..\Modules\Geo\WhereToEat.Geo.Infrastructure\WhereToEat.Geo.Infrastructure.csproj" />
+
+    <!-- (3) Nightly price-median refresh — writes the Step 7 price-median table via the
+         Recommendation.Infrastructure IPriceMedianWriter (DB-only — NO Redis). -->
+    <ProjectReference Include="..\..\Modules\Recommendation\WhereToEat.Recommendation.Infrastructure\WhereToEat.Recommendation.Infrastructure.csproj" />
+
+    <!-- (4) Rating recompute — materializes the Step 5 Bayesian-smoothed aggregate inputs via the
+         Ratings.Infrastructure recomputer. -->
+    <ProjectReference Include="..\..\Modules\Ratings\WhereToEat.Ratings.Infrastructure\WhereToEat.Ratings.Infrastructure.csproj" />
+
+    <!-- Catalog persistence supplies the coordinate-writer seam (geocode queue + write-back) the
+         geocode-refresh job needs, and the catalog read model the median calc reads. -->
+    <ProjectReference Include="..\..\Modules\Catalog\WhereToEat.Catalog.Infrastructure\WhereToEat.Catalog.Infrastructure.csproj" />
+
+    <!-- Step 13 cross-cutting: Redis cache (parser rate-limit + read-through), MassTransit bus
+         (Contracts events; the worker hosts the geocode-on-AddressChanged consumer), observability
+         (structured logging + correlation-id-over-the-bus + OpenTelemetry traces/metrics). -->
+    <ProjectReference Include="..\..\Shared\WhereToEat.BuildingBlocks.Caching\WhereToEat.BuildingBlocks.Caching.csproj" />
+    <ProjectReference Include="..\..\Shared\WhereToEat.BuildingBlocks.Messaging\WhereToEat.BuildingBlocks.Messaging.csproj" />
+    <ProjectReference Include="..\..\Shared\WhereToEat.BuildingBlocks.Observability\WhereToEat.BuildingBlocks.Observability.csproj" />
+  </ItemGroup>
+
+  <!-- The Worker integration tests drive the host's composition + jobs directly. -->
+  <ItemGroup>
+    <InternalsVisibleTo Include="WhereToEat.Worker.Integration" />
+  </ItemGroup>
+
+</Project>

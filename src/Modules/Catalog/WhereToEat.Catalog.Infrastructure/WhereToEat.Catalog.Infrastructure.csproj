@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Catalog.Infrastructure (Step 4): the Dapper-backed adapter that implements the Catalog domain's
+    ICatalogRepository port with hand-tuned SQL over the SQL-script-owned schema. It is the outer
+    layer of the Catalog module — it references the Catalog Domain (the port + aggregates),
+    SharedKernel (Money/GeoPoint/Haversine), and the shared BuildingBlocks.Persistence plumbing.
+    It uses Dapper ONLY and NEVER EF Core (EF is Admin.Infrastructure-only — the Step 2
+    EF-containment fitness test guards this; this project is referenced by the architecture tests).
+    The `geography` column is read/written via WKT, so no native SqlServer.Types interop is needed.
+  -->
+  <PropertyGroup>
+    <RootNamespace>WhereToEat.Catalog.Infrastructure</RootNamespace>
+    <AssemblyName>WhereToEat.Catalog.Infrastructure</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+  </ItemGroup>
+
+  <!--
+    The spatial read model (ICatalogSpatialReader / NearbyRestaurant) is internal to this assembly
+    so no other module can take a project reference onto Catalog.Infrastructure through it (the
+    Step 2 module-boundary rule). The containerized integration tests exercise the concrete reader
+    directly, so they need access to those internals.
+  -->
+  <ItemGroup>
+    <InternalsVisibleTo Include="WhereToEat.Catalog.Integration" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WhereToEat.Catalog.Domain\WhereToEat.Catalog.Domain.csproj" />
+    <ProjectReference Include="..\WhereToEat.Catalog.Application\WhereToEat.Catalog.Application.csproj" />
+    <!-- The Geo module re-geocodes through the Contracts ICatalogCoordinateWriter seam (Step 8);
+         THIS module supplies the adapter (CatalogCoordinateWriter) over its own ICatalogRepository,
+         so the catalog-domain coupling stays inside the Catalog module and Geo only sees Contracts. -->
+    <ProjectReference Include="..\..\..\Shared\WhereToEat.Contracts\WhereToEat.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\Shared\WhereToEat.BuildingBlocks.Persistence\WhereToEat.BuildingBlocks.Persistence.csproj" />
+  </ItemGroup>
+
+</Project>

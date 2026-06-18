@@ -1,0 +1,175 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="d8040187-f2f7-48fc-9a93-b120a05bf4da" name="Viktor@DESKTOP-35C6V2O 2026-06-16 10:15:16" runUser="DESKTOP-35C6V2O\Viktor" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-06-16T10:15:16.3694570+03:00" queuing="2026-06-16T10:15:16.3694574+03:00" start="2026-06-16T10:14:55.4123512+03:00" finish="2026-06-16T10:15:18.1302313+03:00" />
+  <TestSettings name="default" id="0d386d93-42f1-45c5-b710-32b2dbb3437b">
+    <Deployment runDeploymentRoot="Viktor_DESKTOP-35C6V2O_2026-06-16_10_15_16" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="afaac301-9cbb-4d30-bae0-f6415535b448" testId="a5e373c8-0339-57e7-2546-5a8ad18a4d75" testName="WhereToEat.PublicApi.Integration.RecommendEndpointTests.Recommend_CompositePriceQuality_RanksHigherRatedVenueFirst" computerName="DESKTOP-35C6V2O" duration="00:00:00.0430118" startTime="2026-06-16T10:15:17.5189648+03:00" endTime="2026-06-16T10:15:17.5189652+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="afaac301-9cbb-4d30-bae0-f6415535b448" />
+    <UnitTestResult executionId="6f7db4d1-7797-485f-9fc8-18e8e4ead1eb" testId="dca8620a-fd2c-091b-2ee0-88876fd4f1d4" testName="WhereToEat.PublicApi.Integration.AuthTests.PublicRead_IsReachable_WithoutToken" computerName="DESKTOP-35C6V2O" duration="00:00:02.2362211" startTime="2026-06-16T10:15:16.3363714+03:00" endTime="2026-06-16T10:15:16.3363931+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6f7db4d1-7797-485f-9fc8-18e8e4ead1eb" />
+    <UnitTestResult executionId="c402e0c1-59c3-4453-bfee-98fcad691f20" testId="c8fa2075-9f9a-d736-bfc6-5f8bb386c40c" testName="WhereToEat.PublicApi.Integration.RecommendEndpointTests.Recommend_RejectsOutOfRangeUserGeo_With400" computerName="DESKTOP-35C6V2O" duration="00:00:00.0392382" startTime="2026-06-16T10:15:17.4755020+03:00" endTime="2026-06-16T10:15:17.4755021+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c402e0c1-59c3-4453-bfee-98fcad691f20" />
+    <UnitTestResult executionId="e024f1bc-2955-4186-a9b7-3f9729466c37" testId="cd2b912e-ed71-ccdb-1bfb-c388d0489013" testName="WhereToEat.PublicApi.Integration.RecommendEndpointTests.Recommend_RejectsItemWithNeitherCategoryNorDish_With400" computerName="DESKTOP-35C6V2O" duration="00:00:00.0026999" startTime="2026-06-16T10:15:17.4358205+03:00" endTime="2026-06-16T10:15:17.4358208+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e024f1bc-2955-4186-a9b7-3f9729466c37" />
+    <UnitTestResult executionId="f31c0e2d-80b3-45ca-a5fd-b1319e16cf58" testId="764a4b9b-8264-1852-ede9-b45ef96b3980" testName="WhereToEat.PublicApi.Integration.CatalogEndpointsTests.GetRestaurantDetails_ReturnsNotFound_ForUnknownRestaurant" computerName="DESKTOP-35C6V2O" duration="00:00:00.0045947" startTime="2026-06-16T10:15:17.0964961+03:00" endTime="2026-06-16T10:15:17.0964963+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f31c0e2d-80b3-45ca-a5fd-b1319e16cf58" />
+    <UnitTestResult executionId="f0ff1ad2-c75a-46c4-bb8a-727975f9ad29" testId="a944890f-8247-f15e-29a9-9253079e78ae" testName="WhereToEat.PublicApi.Integration.AuthTests.ProtectedEndpoint_ReturnsOk_WithValidToken" computerName="DESKTOP-35C6V2O" duration="00:00:00.0220336" startTime="2026-06-16T10:15:16.4554332+03:00" endTime="2026-06-16T10:15:16.4554334+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f0ff1ad2-c75a-46c4-bb8a-727975f9ad29" />
+    <UnitTestResult executionId="07c577ce-b187-4202-a230-6f74ed91e1ce" testId="f0d5d011-bae4-5f34-616f-bb9fa196323d" testName="WhereToEat.PublicApi.Integration.RecommendEndpointTests.Recommend_RejectsUnknownSortKey_With400" computerName="DESKTOP-35C6V2O" duration="00:00:00.0438881" startTime="2026-06-16T10:15:17.4326082+03:00" endTime="2026-06-16T10:15:17.4326084+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="07c577ce-b187-4202-a230-6f74ed91e1ce" />
+    <UnitTestResult executionId="5a2cb825-35f0-4ada-882a-598e2eaa2be1" testId="7aec1971-e497-2260-5c7e-d9495ca10295" testName="WhereToEat.PublicApi.Integration.MapEndpointTests.Map_ReturnsNoMapData_ForRestaurantWithoutCoordinates" computerName="DESKTOP-35C6V2O" duration="00:00:00.0317253" startTime="2026-06-16T10:15:17.1904391+03:00" endTime="2026-06-16T10:15:17.1904393+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5a2cb825-35f0-4ada-882a-598e2eaa2be1" />
+    <UnitTestResult executionId="24c3c9bc-26e8-4b13-bef2-9120d88177b8" testId="b203d783-78e6-504d-ed0d-0836c8504e9c" testName="WhereToEat.PublicApi.Integration.AuthTests.ProtectedEndpoint_ReturnsUnauthorized_WithInvalidToken" computerName="DESKTOP-35C6V2O" duration="00:00:00.0051068" startTime="2026-06-16T10:15:16.4327652+03:00" endTime="2026-06-16T10:15:16.4327653+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="24c3c9bc-26e8-4b13-bef2-9120d88177b8" />
+    <UnitTestResult executionId="bedace8d-e6c5-4128-9f89-152be859bdec" testId="0eae03c2-8b5b-ac3f-8a57-8331df57ed2d" testName="WhereToEat.PublicApi.Integration.SearchEndpointsTests.SearchDishes_BlankPrefix_ReturnsEmptyList" computerName="DESKTOP-35C6V2O" duration="00:00:00.0139888" startTime="2026-06-16T10:15:17.5335786+03:00" endTime="2026-06-16T10:15:17.5335800+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="bedace8d-e6c5-4128-9f89-152be859bdec" />
+    <UnitTestResult executionId="8490bbda-9465-4dd5-b97b-de2340f6cb0d" testId="b77ea1fb-7268-7860-c70d-217a51312f7f" testName="WhereToEat.PublicApi.Integration.MapEndpointTests.Map_ReturnsNotFound_ForUnknownRestaurant" computerName="DESKTOP-35C6V2O" duration="00:00:00.0050724" startTime="2026-06-16T10:15:17.1583290+03:00" endTime="2026-06-16T10:15:17.1583293+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8490bbda-9465-4dd5-b97b-de2340f6cb0d" />
+    <UnitTestResult executionId="16e094ba-365d-4b51-bb14-fe85efa2cf41" testId="86b22fea-6a74-80a1-3501-9167f8b992e6" testName="WhereToEat.PublicApi.Integration.RecommendEndpointTests.Recommend_ExplicitPriceSort_RanksCheapestFirst" computerName="DESKTOP-35C6V2O" duration="00:00:00.1902005" startTime="2026-06-16T10:15:17.3813188+03:00" endTime="2026-06-16T10:15:17.3813191+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="16e094ba-365d-4b51-bb14-fe85efa2cf41" />
+    <UnitTestResult executionId="b5c9bdc2-29e2-4e52-8966-906e653cac7b" testId="690468c8-9080-4e0f-6517-a52e73667017" testName="WhereToEat.PublicApi.Integration.RecommendEndpointTests.Recommend_RejectsEmptySelection_With400" computerName="DESKTOP-35C6V2O" duration="00:00:00.0064069" startTime="2026-06-16T10:15:17.3882545+03:00" endTime="2026-06-16T10:15:17.3882547+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b5c9bdc2-29e2-4e52-8966-906e653cac7b" />
+    <UnitTestResult executionId="7cfe0e89-bbdb-419f-a196-a27dbf7f2020" testId="ddafda7d-a6fe-b78b-33ab-f444af9284e3" testName="WhereToEat.PublicApi.Integration.CatalogEndpointsTests.ListDishesByCategory_ReturnsDishesInThatCategory" computerName="DESKTOP-35C6V2O" duration="00:00:00.0457587" startTime="2026-06-16T10:15:17.0914555+03:00" endTime="2026-06-16T10:15:17.0914557+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7cfe0e89-bbdb-419f-a196-a27dbf7f2020" />
+    <UnitTestResult executionId="c5a0ed79-c971-48ce-a254-c381b6b70f62" testId="ccdbcbe7-a631-53ac-b511-febf87fbaf6a" testName="WhereToEat.PublicApi.Integration.AuthTests.ProtectedEndpoint_ReturnsUnauthorized_WithoutToken" computerName="DESKTOP-35C6V2O" duration="00:00:00.0023479" startTime="2026-06-16T10:15:16.4582073+03:00" endTime="2026-06-16T10:15:16.4582074+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c5a0ed79-c971-48ce-a254-c381b6b70f62" />
+    <UnitTestResult executionId="5619477d-5600-4430-93ce-9f139f88e604" testId="67f85a0a-97a0-0d34-9d12-c733b3040b97" testName="WhereToEat.PublicApi.Integration.MapEndpointTests.Map_EchoesOnlyStoredFields_ForRestaurantWithCoordinates" computerName="DESKTOP-35C6V2O" duration="00:00:00.0542587" startTime="2026-06-16T10:15:17.1514287+03:00" endTime="2026-06-16T10:15:17.1514290+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5619477d-5600-4430-93ce-9f139f88e604" />
+    <UnitTestResult executionId="6eaf2cdc-e306-4339-be6a-8decb8a908b1" testId="ff2fc9ff-061b-be6c-4ba3-ca0f78c767cb" testName="WhereToEat.PublicApi.Integration.CatalogEndpointsTests.ListCategories_ReturnsSeededCategory" computerName="DESKTOP-35C6V2O" duration="00:00:00.4899349" startTime="2026-06-16T10:15:16.9511620+03:00" endTime="2026-06-16T10:15:16.9511623+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6eaf2cdc-e306-4339-be6a-8decb8a908b1" />
+    <UnitTestResult executionId="bf91968c-cfc1-4d59-b3b4-1def57c5253f" testId="b2f5fe74-eab1-9d6b-766e-18f0d209e4cd" testName="WhereToEat.PublicApi.Integration.SearchEndpointsTests.SearchDishes_ByPrefix_ReturnsMatchingDish" computerName="DESKTOP-35C6V2O" duration="00:00:00.0366403" startTime="2026-06-16T10:15:17.6116612+03:00" endTime="2026-06-16T10:15:17.6116618+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="bf91968c-cfc1-4d59-b3b4-1def57c5253f" />
+    <UnitTestResult executionId="8ed71e5c-a13f-47ee-8e43-8ac3722b89f5" testId="28c7fa80-8763-1e05-39e6-d333fd6f6eda" testName="WhereToEat.PublicApi.Integration.SearchEndpointsTests.SearchCategories_ByPrefix_ReturnsMatchingCategory" computerName="DESKTOP-35C6V2O" duration="00:00:00.0405454" startTime="2026-06-16T10:15:17.5745896+03:00" endTime="2026-06-16T10:15:17.5745898+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8ed71e5c-a13f-47ee-8e43-8ac3722b89f5" />
+    <UnitTestResult executionId="60cc1c35-59ad-4cab-8da6-475f61a9b154" testId="c9c3539a-88e2-beb4-b0a5-3316ed988fbe" testName="WhereToEat.PublicApi.Integration.CatalogEndpointsTests.GetRestaurantDetails_AlwaysIncludesContactLinks" computerName="DESKTOP-35C6V2O" duration="00:00:00.0933458" startTime="2026-06-16T10:15:17.0450587+03:00" endTime="2026-06-16T10:15:17.0450589+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="60cc1c35-59ad-4cab-8da6-475f61a9b154" />
+    <UnitTestResult executionId="ffa44c92-08aa-4d7d-a985-e925005c7d39" testId="0747e4f7-71f6-ee51-e150-28eeea1ab1ca" testName="WhereToEat.PublicApi.Integration.AuthTests.ProtectedEndpoint_ReturnsUnauthorized_WithWellFormedTokenSignedByWrongKey" computerName="DESKTOP-35C6V2O" duration="00:00:00.0884511" startTime="2026-06-16T10:15:16.4271339+03:00" endTime="2026-06-16T10:15:16.4271342+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ffa44c92-08aa-4d7d-a985-e925005c7d39" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="WhereToEat.PublicApi.Integration.CatalogEndpointsTests.GetRestaurantDetails_AlwaysIncludesContactLinks" storage="d:\projects\vs_projects\depoisty\tests\integration\wheretoeat.publicapi.integration\bin\debug\net8.0\wheretoeat.publicapi.integration.dll" id="c9c3539a-88e2-beb4-b0a5-3316ed988fbe">
+      <Execution id="60cc1c35-59ad-4cab-8da6-475f61a9b154" />
+      <TestMethod codeBase="D:\Projects\VS_Projects\DePoisty\tests\Integration\WhereToEat.PublicApi.Integration\bin\Debug\net8.0\WhereToEat.PublicApi.Integration.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="WhereToEat.PublicApi.Integration.CatalogEndpointsTests" name="GetRestaurantDetails_AlwaysIncludesContactLinks" />
+    </UnitTest>
+    <UnitTest name="WhereToEat.PublicApi.Integration.RecommendEndpointTests.Recommend_RejectsOutOfRangeUserGeo_With400" storage="d:\projects\vs_projects\depoisty\tests\integration\wheretoeat.publicapi.integration\bin\debug\net8.0\wheretoeat.publicapi.integration.dll" id="c8fa2075-9f9a-d736-bfc6-5f8bb386c40c">
+      <Execution id="c402e0c1-59c3-4453-bfee-98fcad691f20" />
+      <TestMethod codeBase="D:\Projects\VS_Projects\DePoisty\tests\Integration\WhereToEat.PublicApi.Integration\bin\Debug\net8.0\WhereToEat.PublicApi.Integration.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="WhereToEat.PublicApi.Integration.RecommendEndpointTests" name="Recommend_RejectsOutOfRangeUserGeo_With400" />
+    </UnitTest>
+    <UnitTest name="WhereToEat.PublicApi.Integration.AuthTests.ProtectedEndpoint_ReturnsUnauthorized_WithWellFormedTokenSignedByWrongKey" storage="d:\projects\vs_projects\depoisty\tests\integration\wheretoeat.publicapi.integration\bin\debug\net8.0\wheretoeat.publicapi.integration.dll" id="0747e4f7-71f6-ee51-e150-28eeea1ab1ca">
+      <Execution id="ffa44c92-08aa-4d7d-a985-e925005c7d39" />
+      <TestMethod codeBase="D:\Projects\VS_Projects\DePoisty\tests\Integration\WhereToEat.PublicApi.Integration\bin\Debug\net8.0\WhereToEat.PublicApi.Integration.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="WhereToEat.PublicApi.Integration.AuthTests" name="ProtectedEndpoint_ReturnsUnauthorized_WithWellFormedTokenSignedByWrongKey" />
+    </UnitTest>
+    <UnitTest name="WhereToEat.PublicApi.Integration.CatalogEndpointsTests.ListDishesByCategory_ReturnsDishesInThatCategory" storage="d:\projects\vs_projects\depoisty\tests\integration\wheretoeat.publicapi.integration\bin\debug\net8.0\wheretoeat.publicapi.integration.dll" id="ddafda7d-a6fe-b78b-33ab-f444af9284e3">
+      <Execution id="7cfe0e89-bbdb-419f-a196-a27dbf7f2020" />
+      <TestMethod codeBase="D:\Projects\VS_Projects\DePoisty\tests\Integration\WhereToEat.PublicApi.Integration\bin\Debug\net8.0\WhereToEat.PublicApi.Integration.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="WhereToEat.PublicApi.Integration.CatalogEndpointsTests" name="ListDishesByCategory_ReturnsDishesInThatCategory" />
+    </UnitTest>
+    <UnitTest name="WhereToEat.PublicApi.Integration.RecommendEndpointTests.Recommend_CompositePriceQuality_RanksHigherRatedVenueFirst" storage="d:\projects\vs_projects\depoisty\tests\integration\wheretoeat.publicapi.integration\bin\debug\net8.0\wheretoeat.publicapi.integration.dll" id="a5e373c8-0339-57e7-2546-5a8ad18a4d75">
+      <Execution id="afaac301-9cbb-4d30-bae0-f6415535b448" />
+      <TestMethod codeBase="D:\Projects\VS_Projects\DePoisty\tests\Integration\WhereToEat.PublicApi.Integration\bin\Debug\net8.0\WhereToEat.PublicApi.Integration.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="WhereToEat.PublicApi.Integration.RecommendEndpointTests" name="Recommend_CompositePriceQuality_RanksHigherRatedVenueFirst" />
+    </UnitTest>
+    <UnitTest name="WhereToEat.PublicApi.Integration.RecommendEndpointTests.Recommend_RejectsEmptySelection_With400" storage="d:\projects\vs_projects\depoisty\tests\integration\wheretoeat.publicapi.integration\bin\debug\net8.0\wheretoeat.publicapi.integration.dll" id="690468c8-9080-4e0f-6517-a52e73667017">
+      <Execution id="b5c9bdc2-29e2-4e52-8966-906e653cac7b" />
+      <TestMethod codeBase="D:\Projects\VS_Projects\DePoisty\tests\Integration\WhereToEat.PublicApi.Integration\bin\Debug\net8.0\WhereToEat.PublicApi.Integration.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="WhereToEat.PublicApi.Integration.RecommendEndpointTests" name="Recommend_RejectsEmptySelection_With400" />
+    </UnitTest>
+    <UnitTest name="WhereToEat.PublicApi.Integration.MapEndpointTests.Map_ReturnsNotFound_ForUnknownRestaurant" storage="d:\projects\vs_projects\depoisty\tests\integration\wheretoeat.publicapi.integration\bin\debug\net8.0\wheretoeat.publicapi.integration.dll" id="b77ea1fb-7268-7860-c70d-217a51312f7f">
+      <Execution id="8490bbda-9465-4dd5-b97b-de2340f6cb0d" />
+      <TestMethod codeBase="D:\Projects\VS_Projects\DePoisty\tests\Integration\WhereToEat.PublicApi.Integration\bin\Debug\net8.0\WhereToEat.PublicApi.Integration.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="WhereToEat.PublicApi.Integration.MapEndpointTests" name="Map_ReturnsNotFound_ForUnknownRestaurant" />
+    </UnitTest>
+    <UnitTest name="WhereToEat.PublicApi.Integration.RecommendEndpointTests.Recommend_RejectsUnknownSortKey_With400" storage="d:\projects\vs_projects\depoisty\tests\integration\wheretoeat.publicapi.integration\bin\debug\net8.0\wheretoeat.publicapi.integration.dll" id="f0d5d011-bae4-5f34-616f-bb9fa196323d">
+      <Execution id="07c577ce-b187-4202-a230-6f74ed91e1ce" />
+      <TestMethod codeBase="D:\Projects\VS_Projects\DePoisty\tests\Integration\WhereToEat.PublicApi.Integration\bin\Debug\net8.0\WhereToEat.PublicApi.Integration.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="WhereToEat.PublicApi.Integration.RecommendEndpointTests" name="Recommend_RejectsUnknownSortKey_With400" />
+    </UnitTest>
+    <UnitTest name="WhereToEat.PublicApi.Integration.AuthTests.ProtectedEndpoint_ReturnsOk_WithValidToken" storage="d:\projects\vs_projects\depoisty\tests\integration\wheretoeat.publicapi.integration\bin\debug\net8.0\wheretoeat.publicapi.integration.dll" id="a944890f-8247-f15e-29a9-9253079e78ae">
+      <Execution id="f0ff1ad2-c75a-46c4-bb8a-727975f9ad29" />
+      <TestMethod codeBase="D:\Projects\VS_Projects\DePoisty\tests\Integration\WhereToEat.PublicApi.Integration\bin\Debug\net8.0\WhereToEat.PublicApi.Integration.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="WhereToEat.PublicApi.Integration.AuthTests" name="ProtectedEndpoint_ReturnsOk_WithValidToken" />
+    </UnitTest>
+    <UnitTest name="WhereToEat.PublicApi.Integration.RecommendEndpointTests.Recommend_ExplicitPriceSort_RanksCheapestFirst" storage="d:\projects\vs_projects\depoisty\tests\integration\wheretoeat.publicapi.integration\bin\debug\net8.0\wheretoeat.publicapi.integration.dll" id="86b22fea-6a74-80a1-3501-9167f8b992e6">
+      <Execution id="16e094ba-365d-4b51-bb14-fe85efa2cf41" />
+      <TestMethod codeBase="D:\Projects\VS_Projects\DePoisty\tests\Integration\WhereToEat.PublicApi.Integration\bin\Debug\net8.0\WhereToEat.PublicApi.Integration.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="WhereToEat.PublicApi.Integration.RecommendEndpointTests" name="Recommend_ExplicitPriceSort_RanksCheapestFirst" />
+    </UnitTest>
+    <UnitTest name="WhereToEat.PublicApi.Integration.MapEndpointTests.Map_ReturnsNoMapData_ForRestaurantWithoutCoordinates" storage="d:\projects\vs_projects\depoisty\tests\integration\wheretoeat.publicapi.integration\bin\debug\net8.0\wheretoeat.publicapi.integration.dll" id="7aec1971-e497-2260-5c7e-d9495ca10295">
+      <Execution id="5a2cb825-35f0-4ada-882a-598e2eaa2be1" />
+      <TestMethod codeBase="D:\Projects\VS_Projects\DePoisty\tests\Integration\WhereToEat.PublicApi.Integration\bin\Debug\net8.0\WhereToEat.PublicApi.Integration.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="WhereToEat.PublicApi.Integration.MapEndpointTests" name="Map_ReturnsNoMapData_ForRestaurantWithoutCoordinates" />
+    </UnitTest>
+    <UnitTest name="WhereToEat.PublicApi.Integration.RecommendEndpointTests.Recommend_RejectsItemWithNeitherCategoryNorDish_With400" storage="d:\projects\vs_projects\depoisty\tests\integration\wheretoeat.publicapi.integration\bin\debug\net8.0\wheretoeat.publicapi.integration.dll" id="cd2b912e-ed71-ccdb-1bfb-c388d0489013">
+      <Execution id="e024f1bc-2955-4186-a9b7-3f9729466c37" />
+      <TestMethod codeBase="D:\Projects\VS_Projects\DePoisty\tests\Integration\WhereToEat.PublicApi.Integration\bin\Debug\net8.0\WhereToEat.PublicApi.Integration.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="WhereToEat.PublicApi.Integration.RecommendEndpointTests" name="Recommend_RejectsItemWithNeitherCategoryNorDish_With400" />
+    </UnitTest>
+    <UnitTest name="WhereToEat.PublicApi.Integration.MapEndpointTests.Map_EchoesOnlyStoredFields_ForRestaurantWithCoordinates" storage="d:\projects\vs_projects\depoisty\tests\integration\wheretoeat.publicapi.integration\bin\debug\net8.0\wheretoeat.publicapi.integration.dll" id="67f85a0a-97a0-0d34-9d12-c733b3040b97">
+      <Execution id="5619477d-5600-4430-93ce-9f139f88e604" />
+      <TestMethod codeBase="D:\Projects\VS_Projects\DePoisty\tests\Integration\WhereToEat.PublicApi.Integration\bin\Debug\net8.0\WhereToEat.PublicApi.Integration.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="WhereToEat.PublicApi.Integration.MapEndpointTests" name="Map_EchoesOnlyStoredFields_ForRestaurantWithCoordinates" />
+    </UnitTest>
+    <UnitTest name="WhereToEat.PublicApi.Integration.AuthTests.PublicRead_IsReachable_WithoutToken" storage="d:\projects\vs_projects\depoisty\tests\integration\wheretoeat.publicapi.integration\bin\debug\net8.0\wheretoeat.publicapi.integration.dll" id="dca8620a-fd2c-091b-2ee0-88876fd4f1d4">
+      <Execution id="6f7db4d1-7797-485f-9fc8-18e8e4ead1eb" />
+      <TestMethod codeBase="D:\Projects\VS_Projects\DePoisty\tests\Integration\WhereToEat.PublicApi.Integration\bin\Debug\net8.0\WhereToEat.PublicApi.Integration.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="WhereToEat.PublicApi.Integration.AuthTests" name="PublicRead_IsReachable_WithoutToken" />
+    </UnitTest>
+    <UnitTest name="WhereToEat.PublicApi.Integration.SearchEndpointsTests.SearchDishes_BlankPrefix_ReturnsEmptyList" storage="d:\projects\vs_projects\depoisty\tests\integration\wheretoeat.publicapi.integration\bin\debug\net8.0\wheretoeat.publicapi.integration.dll" id="0eae03c2-8b5b-ac3f-8a57-8331df57ed2d">
+      <Execution id="bedace8d-e6c5-4128-9f89-152be859bdec" />
+      <TestMethod codeBase="D:\Projects\VS_Projects\DePoisty\tests\Integration\WhereToEat.PublicApi.Integration\bin\Debug\net8.0\WhereToEat.PublicApi.Integration.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="WhereToEat.PublicApi.Integration.SearchEndpointsTests" name="SearchDishes_BlankPrefix_ReturnsEmptyList" />
+    </UnitTest>
+    <UnitTest name="WhereToEat.PublicApi.Integration.CatalogEndpointsTests.ListCategories_ReturnsSeededCategory" storage="d:\projects\vs_projects\depoisty\tests\integration\wheretoeat.publicapi.integration\bin\debug\net8.0\wheretoeat.publicapi.integration.dll" id="ff2fc9ff-061b-be6c-4ba3-ca0f78c767cb">
+      <Execution id="6eaf2cdc-e306-4339-be6a-8decb8a908b1" />
+      <TestMethod codeBase="D:\Projects\VS_Projects\DePoisty\tests\Integration\WhereToEat.PublicApi.Integration\bin\Debug\net8.0\WhereToEat.PublicApi.Integration.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="WhereToEat.PublicApi.Integration.CatalogEndpointsTests" name="ListCategories_ReturnsSeededCategory" />
+    </UnitTest>
+    <UnitTest name="WhereToEat.PublicApi.Integration.CatalogEndpointsTests.GetRestaurantDetails_ReturnsNotFound_ForUnknownRestaurant" storage="d:\projects\vs_projects\depoisty\tests\integration\wheretoeat.publicapi.integration\bin\debug\net8.0\wheretoeat.publicapi.integration.dll" id="764a4b9b-8264-1852-ede9-b45ef96b3980">
+      <Execution id="f31c0e2d-80b3-45ca-a5fd-b1319e16cf58" />
+      <TestMethod codeBase="D:\Projects\VS_Projects\DePoisty\tests\Integration\WhereToEat.PublicApi.Integration\bin\Debug\net8.0\WhereToEat.PublicApi.Integration.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="WhereToEat.PublicApi.Integration.CatalogEndpointsTests" name="GetRestaurantDetails_ReturnsNotFound_ForUnknownRestaurant" />
+    </UnitTest>
+    <UnitTest name="WhereToEat.PublicApi.Integration.AuthTests.ProtectedEndpoint_ReturnsUnauthorized_WithoutToken" storage="d:\projects\vs_projects\depoisty\tests\integration\wheretoeat.publicapi.integration\bin\debug\net8.0\wheretoeat.publicapi.integration.dll" id="ccdbcbe7-a631-53ac-b511-febf87fbaf6a">
+      <Execution id="c5a0ed79-c971-48ce-a254-c381b6b70f62" />
+      <TestMethod codeBase="D:\Projects\VS_Projects\DePoisty\tests\Integration\WhereToEat.PublicApi.Integration\bin\Debug\net8.0\WhereToEat.PublicApi.Integration.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="WhereToEat.PublicApi.Integration.AuthTests" name="ProtectedEndpoint_ReturnsUnauthorized_WithoutToken" />
+    </UnitTest>
+    <UnitTest name="WhereToEat.PublicApi.Integration.AuthTests.ProtectedEndpoint_ReturnsUnauthorized_WithInvalidToken" storage="d:\projects\vs_projects\depoisty\tests\integration\wheretoeat.publicapi.integration\bin\debug\net8.0\wheretoeat.publicapi.integration.dll" id="b203d783-78e6-504d-ed0d-0836c8504e9c">
+      <Execution id="24c3c9bc-26e8-4b13-bef2-9120d88177b8" />
+      <TestMethod codeBase="D:\Projects\VS_Projects\DePoisty\tests\Integration\WhereToEat.PublicApi.Integration\bin\Debug\net8.0\WhereToEat.PublicApi.Integration.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="WhereToEat.PublicApi.Integration.AuthTests" name="ProtectedEndpoint_ReturnsUnauthorized_WithInvalidToken" />
+    </UnitTest>
+    <UnitTest name="WhereToEat.PublicApi.Integration.SearchEndpointsTests.SearchDishes_ByPrefix_ReturnsMatchingDish" storage="d:\projects\vs_projects\depoisty\tests\integration\wheretoeat.publicapi.integration\bin\debug\net8.0\wheretoeat.publicapi.integration.dll" id="b2f5fe74-eab1-9d6b-766e-18f0d209e4cd">
+      <Execution id="bf91968c-cfc1-4d59-b3b4-1def57c5253f" />
+      <TestMethod codeBase="D:\Projects\VS_Projects\DePoisty\tests\Integration\WhereToEat.PublicApi.Integration\bin\Debug\net8.0\WhereToEat.PublicApi.Integration.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="WhereToEat.PublicApi.Integration.SearchEndpointsTests" name="SearchDishes_ByPrefix_ReturnsMatchingDish" />
+    </UnitTest>
+    <UnitTest name="WhereToEat.PublicApi.Integration.SearchEndpointsTests.SearchCategories_ByPrefix_ReturnsMatchingCategory" storage="d:\projects\vs_projects\depoisty\tests\integration\wheretoeat.publicapi.integration\bin\debug\net8.0\wheretoeat.publicapi.integration.dll" id="28c7fa80-8763-1e05-39e6-d333fd6f6eda">
+      <Execution id="8ed71e5c-a13f-47ee-8e43-8ac3722b89f5" />
+      <TestMethod codeBase="D:\Projects\VS_Projects\DePoisty\tests\Integration\WhereToEat.PublicApi.Integration\bin\Debug\net8.0\WhereToEat.PublicApi.Integration.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="WhereToEat.PublicApi.Integration.SearchEndpointsTests" name="SearchCategories_ByPrefix_ReturnsMatchingCategory" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="a5e373c8-0339-57e7-2546-5a8ad18a4d75" executionId="afaac301-9cbb-4d30-bae0-f6415535b448" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="dca8620a-fd2c-091b-2ee0-88876fd4f1d4" executionId="6f7db4d1-7797-485f-9fc8-18e8e4ead1eb" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c8fa2075-9f9a-d736-bfc6-5f8bb386c40c" executionId="c402e0c1-59c3-4453-bfee-98fcad691f20" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="cd2b912e-ed71-ccdb-1bfb-c388d0489013" executionId="e024f1bc-2955-4186-a9b7-3f9729466c37" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="764a4b9b-8264-1852-ede9-b45ef96b3980" executionId="f31c0e2d-80b3-45ca-a5fd-b1319e16cf58" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a944890f-8247-f15e-29a9-9253079e78ae" executionId="f0ff1ad2-c75a-46c4-bb8a-727975f9ad29" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f0d5d011-bae4-5f34-616f-bb9fa196323d" executionId="07c577ce-b187-4202-a230-6f74ed91e1ce" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7aec1971-e497-2260-5c7e-d9495ca10295" executionId="5a2cb825-35f0-4ada-882a-598e2eaa2be1" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b203d783-78e6-504d-ed0d-0836c8504e9c" executionId="24c3c9bc-26e8-4b13-bef2-9120d88177b8" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0eae03c2-8b5b-ac3f-8a57-8331df57ed2d" executionId="bedace8d-e6c5-4128-9f89-152be859bdec" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b77ea1fb-7268-7860-c70d-217a51312f7f" executionId="8490bbda-9465-4dd5-b97b-de2340f6cb0d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="86b22fea-6a74-80a1-3501-9167f8b992e6" executionId="16e094ba-365d-4b51-bb14-fe85efa2cf41" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="690468c8-9080-4e0f-6517-a52e73667017" executionId="b5c9bdc2-29e2-4e52-8966-906e653cac7b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ddafda7d-a6fe-b78b-33ab-f444af9284e3" executionId="7cfe0e89-bbdb-419f-a196-a27dbf7f2020" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ccdbcbe7-a631-53ac-b511-febf87fbaf6a" executionId="c5a0ed79-c971-48ce-a254-c381b6b70f62" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="67f85a0a-97a0-0d34-9d12-c733b3040b97" executionId="5619477d-5600-4430-93ce-9f139f88e604" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ff2fc9ff-061b-be6c-4ba3-ca0f78c767cb" executionId="6eaf2cdc-e306-4339-be6a-8decb8a908b1" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b2f5fe74-eab1-9d6b-766e-18f0d209e4cd" executionId="bf91968c-cfc1-4d59-b3b4-1def57c5253f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="28c7fa80-8763-1e05-39e6-d333fd6f6eda" executionId="8ed71e5c-a13f-47ee-8e43-8ac3722b89f5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c9c3539a-88e2-beb4-b0a5-3316ed988fbe" executionId="60cc1c35-59ad-4cab-8da6-475f61a9b154" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0747e4f7-71f6-ee51-e150-28eeea1ab1ca" executionId="ffa44c92-08aa-4d7d-a985-e925005c7d39" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Список результатов" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="Все загруженные результаты" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="21" executed="21" passed="21" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v2.8.2+699d445a1a (64-bit .NET 8.0.23)&#xD;
+[xUnit.net 00:00:00.94]   Discovering: WhereToEat.PublicApi.Integration&#xD;
+[xUnit.net 00:00:00.98]   Discovered:  WhereToEat.PublicApi.Integration&#xD;
+[xUnit.net 00:00:00.98]   Starting:    WhereToEat.PublicApi.Integration&#xD;
+[testcontainers.org 00:00:00.48] Connected to Docker:&#xD;
+  Host: npipe://./pipe/docker_engine&#xD;
+  Server Version: 28.4.0&#xD;
+  Kernel Version: 6.18.33.1-microsoft-standard-WSL2&#xD;
+  API Version: 1.51&#xD;
+  Operating System: Docker Desktop&#xD;
+  Total Memory: 7.68 GB&#xD;
+  Labels: &#xD;
+    com.docker.desktop.address=npipe://\\.\pipe\docker_cli&#xD;
+[testcontainers.org 00:00:00.77] Docker container 40ccfa9309a2 created&#xD;
+[testcontainers.org 00:00:00.85] Start Docker container 40ccfa9309a2&#xD;
+[testcontainers.org 00:00:01.13] Wait for Docker container 40ccfa9309a2 to complete readiness checks&#xD;
+[testcontainers.org 00:00:01.14] Docker container 40ccfa9309a2 ready&#xD;
+[testcontainers.org 00:00:01.24] Docker container b15ddb770750 created&#xD;
+[testcontainers.org 00:00:01.27] Start Docker container b15ddb770750&#xD;
+[testcontainers.org 00:00:01.56] Wait for Docker container b15ddb770750 to complete readiness checks&#xD;
+[testcontainers.org 00:00:01.59] Execute "/bin/sh -c find /opt/mssql-tools*/bin/sqlcmd -type f -print -quit" at Docker container b15ddb770750&#xD;
+[testcontainers.org 00:00:01.72] Execute "/opt/mssql-tools18/bin/sqlcmd -C -Q SELECT 1;" at Docker container b15ddb770750&#xD;
+[testcontainers.org 00:00:09.18] Execute "/opt/mssql-tools18/bin/sqlcmd -C -Q SELECT 1;" at Docker container b15ddb770750&#xD;
+[testcontainers.org 00:00:09.29] Docker container b15ddb770750 ready&#xD;
+[testcontainers.org 00:00:17.69] Delete Docker container b15ddb770750&#xD;
+[xUnit.net 00:00:19.58]   Finished:    WhereToEat.PublicApi.Integration&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

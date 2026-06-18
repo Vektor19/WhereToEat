@@ -1,0 +1,45 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Geo containerized-SQL integration tests (Step 8). Testcontainers spins up a real SQL Server,
+    DbUp migrations create the catalog schema (incl. the geography coordinate column), and the test
+    drives the full geocode write path: GeocodeRestaurantCommandHandler -> a stub IGeocoder ->
+    the Catalog CatalogCoordinateWriter (the Contracts seam) -> the Dapper repository, asserting the
+    coordinate is persisted into the geography column and reads back as the OSM-sourced point
+    (invariant #7 — no Google lat/lng anywhere). Needs Docker.
+  -->
+  <PropertyGroup>
+    <RootNamespace>WhereToEat.Geo.Integration</RootNamespace>
+    <AssemblyName>WhereToEat.Geo.Integration</AssemblyName>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="coverlet.collector">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="FluentAssertions" />
+    <PackageReference Include="Dapper" />
+    <PackageReference Include="Microsoft.Data.SqlClient" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+    <PackageReference Include="Testcontainers.MsSql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Modules\Geo\WhereToEat.Geo.Application\WhereToEat.Geo.Application.csproj" />
+    <ProjectReference Include="..\..\..\src\Modules\Catalog\WhereToEat.Catalog.Domain\WhereToEat.Catalog.Domain.csproj" />
+    <ProjectReference Include="..\..\..\src\Modules\Catalog\WhereToEat.Catalog.Infrastructure\WhereToEat.Catalog.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\src\Shared\WhereToEat.Contracts\WhereToEat.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\src\Shared\WhereToEat.BuildingBlocks.Persistence\WhereToEat.BuildingBlocks.Persistence.csproj" />
+    <ProjectReference Include="..\..\..\src\Shared\WhereToEat.BuildingBlocks.Migrations\WhereToEat.BuildingBlocks.Migrations.csproj" />
+  </ItemGroup>
+
+</Project>

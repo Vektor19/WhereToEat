@@ -1,0 +1,44 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Unit tests for the Parsing module (Step 9): the compliance gates (robots.txt disallow blocks,
+    per-host rate-limit enforces the interval, non-first-party host rejected — invariant #9), the
+    admin-protection persist gate in RunParseCommandHandler (DoNotUpdate skipped, DoNotParse not
+    created/overwritten — invariant #3), and the Normalizer mapped/unmapped split (unmappable →
+    quarantine, never dropped/fatal — invariant #2). Pure unit tests with NSubstitute fakes + a
+    FakeTimeProvider; no Docker, no browser.
+  -->
+  <PropertyGroup>
+    <RootNamespace>WhereToEat.Parsing.UnitTests</RootNamespace>
+    <AssemblyName>WhereToEat.Parsing.UnitTests</AssemblyName>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="coverlet.collector">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="FluentAssertions" />
+    <PackageReference Include="NSubstitute" />
+    <PackageReference Include="Microsoft.Extensions.TimeProvider.Testing" />
+    <PackageReference Include="Microsoft.Extensions.Options" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Modules\Parsing\WhereToEat.Parsing.Domain\WhereToEat.Parsing.Domain.csproj" />
+    <ProjectReference Include="..\..\..\src\Modules\Parsing\WhereToEat.Parsing.Application\WhereToEat.Parsing.Application.csproj" />
+    <ProjectReference Include="..\..\..\src\Modules\Parsing\WhereToEat.Parsing.Infrastructure\WhereToEat.Parsing.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\src\Shared\WhereToEat.SharedKernel\WhereToEat.SharedKernel.csproj" />
+    <ProjectReference Include="..\..\..\src\Shared\WhereToEat.Contracts\WhereToEat.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>

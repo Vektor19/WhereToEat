@@ -1,0 +1,14 @@
+# Analyzer rules relaxed for test projects only.
+# The Method_Scenario_Expectation naming convention (underscores) is the de-facto
+# standard for readable xUnit test names, so CA1707 is intentionally disabled here.
+# These relaxations do NOT apply to production code under src/.
+
+[*.cs]
+# CA1707: Identifiers should not contain underscores — test method naming convention.
+dotnet_diagnostic.CA1707.severity = none
+
+# CA1034: Nested types should not be visible — test fixtures sometimes nest helpers.
+dotnet_diagnostic.CA1034.severity = none
+
+# CA2007: Do not directly await a Task without ConfigureAwait — irrelevant in test code.
+dotnet_diagnostic.CA2007.severity = none

@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Unit tests for the Analytics ingest pipeline (Step 11): the Anonymizer's retain/hash/drop rules
+       (dropped fields absent, hashed fields non-reversible, retained fields survive), the
+       RotatingSaltProvider (within-window stability / cross-window divergence), the GeohashEncoder
+       coarseness, and the IngestEventCommandHandler (anonymize-before-persist; nothing written on
+       failure). The pipeline lives in Analytics.Infrastructure, so this references Infrastructure +
+       Application + Domain. -->
+  <PropertyGroup>
+    <RootNamespace>WhereToEat.Analytics.Application.UnitTests</RootNamespace>
+    <AssemblyName>WhereToEat.Analytics.Application.UnitTests</AssemblyName>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="coverlet.collector">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="FluentAssertions" />
+    <PackageReference Include="NSubstitute" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Modules\Analytics\WhereToEat.Analytics.Application\WhereToEat.Analytics.Application.csproj" />
+    <ProjectReference Include="..\..\..\src\Modules\Analytics\WhereToEat.Analytics.Infrastructure\WhereToEat.Analytics.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

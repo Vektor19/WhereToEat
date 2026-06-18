@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Admin Application unit tests (Step 10): the admin CRUD command handlers with a MOCKED
+    IAdminCatalogStore + IAddressChangedDispatcher (NSubstitute). They assert the handler logic in
+    isolation — each command delegates to the store and returns its Result, and EditAddress raises the
+    re-geocode dispatch ONLY after a successful persist (invariant #3 protection surface + the Step 8
+    AddressChanged seam). No database, no EF — the store is substituted.
+  -->
+  <PropertyGroup>
+    <RootNamespace>WhereToEat.Admin.Application.UnitTests</RootNamespace>
+    <AssemblyName>WhereToEat.Admin.Application.UnitTests</AssemblyName>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="coverlet.collector">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="FluentAssertions" />
+    <PackageReference Include="NSubstitute" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Modules\Admin\WhereToEat.Admin.Application\WhereToEat.Admin.Application.csproj" />
+    <ProjectReference Include="..\..\..\src\Shared\WhereToEat.SharedKernel\WhereToEat.SharedKernel.csproj" />
+  </ItemGroup>
+
+</Project>

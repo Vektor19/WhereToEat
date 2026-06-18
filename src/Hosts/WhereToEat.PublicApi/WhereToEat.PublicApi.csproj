@@ -1,0 +1,55 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <!--
+    Public API host (Step 6): the read-side composition root — an ASP.NET Core Minimal API serving
+    the anonymous catalog/search/map read endpoints with health checks + Swagger. As a Host it is
+    the one place allowed to reference module Infrastructure (for composition); it calls each
+    module's AddXxxModule extension. It depends on the OIDC auth building block (token validation +
+    identity seam) so the later authenticated endpoints (ratings) have their seam ready, while the
+    Step 6 read endpoints stay anonymous.
+
+    Map endpoint is a DB-ONLY stub here: stored coordinates / Place ID / deep-link only, NO geocoder
+    port (that arrives in Step 8) — so the host has NO dependency on any Geo/geocoder assembly.
+  -->
+  <PropertyGroup>
+    <RootNamespace>WhereToEat.PublicApi</RootNamespace>
+    <AssemblyName>WhereToEat.PublicApi</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Modules\Catalog\WhereToEat.Catalog.Application\WhereToEat.Catalog.Application.csproj" />
+    <ProjectReference Include="..\..\Modules\Catalog\WhereToEat.Catalog.Infrastructure\WhereToEat.Catalog.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Modules\Catalog\WhereToEat.Catalog.Search.Application\WhereToEat.Catalog.Search.Application.csproj" />
+    <!-- Step 7: the recommendation module — its Application handler (RecommendQuery) and the
+         Infrastructure composition (AddRecommendationModule). As a Host this is the place allowed
+         to reference module Infrastructure for composition. -->
+    <ProjectReference Include="..\..\Modules\Recommendation\WhereToEat.Recommendation.Application\WhereToEat.Recommendation.Application.csproj" />
+    <ProjectReference Include="..\..\Modules\Recommendation\WhereToEat.Recommendation.Infrastructure\WhereToEat.Recommendation.Infrastructure.csproj" />
+    <!-- Step 11: the analytics ingest module — its Application (IngestEventCommand handler, the
+         IAnonymizer/ISaltProvider/IAnalyticsRollupReader ports) and Infrastructure (the rotating-salt
+         anonymizer + append-optimized writer + AddAnalyticsModule). As a Host this is the place allowed
+         to reference module Infrastructure for composition. -->
+    <ProjectReference Include="..\..\Modules\Analytics\WhereToEat.Analytics.Application\WhereToEat.Analytics.Application.csproj" />
+    <ProjectReference Include="..\..\Modules\Analytics\WhereToEat.Analytics.Infrastructure\WhereToEat.Analytics.Infrastructure.csproj" />
+    <!-- Step 13: the Geo module supplies the IRestaurantGeocoder adapter the bus's
+         geocode-on-AddressChanged consumer resolves to (the consumer itself references only Contracts). -->
+    <ProjectReference Include="..\..\Modules\Geo\WhereToEat.Geo.Application\WhereToEat.Geo.Application.csproj" />
+    <ProjectReference Include="..\..\Modules\Geo\WhereToEat.Geo.Infrastructure\WhereToEat.Geo.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Shared\WhereToEat.BuildingBlocks.Auth\WhereToEat.BuildingBlocks.Auth.csproj" />
+    <!-- Step 13 cross-cutting: Redis cache, MassTransit bus, observability (logging/correlation/OTel). -->
+    <ProjectReference Include="..\..\Shared\WhereToEat.BuildingBlocks.Caching\WhereToEat.BuildingBlocks.Caching.csproj" />
+    <ProjectReference Include="..\..\Shared\WhereToEat.BuildingBlocks.Messaging\WhereToEat.BuildingBlocks.Messaging.csproj" />
+    <ProjectReference Include="..\..\Shared\WhereToEat.BuildingBlocks.Observability\WhereToEat.BuildingBlocks.Observability.csproj" />
+  </ItemGroup>
+
+  <!-- The integration tests drive the host via WebApplicationFactory and need its internals
+       (Program is implicitly internal in a top-level-statement host). -->
+  <ItemGroup>
+    <InternalsVisibleTo Include="WhereToEat.PublicApi.Integration" />
+  </ItemGroup>
+
+</Project>

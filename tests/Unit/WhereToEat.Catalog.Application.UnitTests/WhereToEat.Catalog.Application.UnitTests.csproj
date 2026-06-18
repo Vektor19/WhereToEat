@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Application-layer unit tests (Step 6) for the catalog/search/map query handlers with a MOCKED
+    ICatalogRepository (NSubstitute). They assert the handler logic in isolation: details always map
+    the contact links (§5.8), the Map handler builds its payload from stored fields only and returns
+    the "no map payload"/null shapes, and the search handlers are deterministic prefix lookups (no
+    NLP). No database — the repository is substituted.
+  -->
+  <PropertyGroup>
+    <RootNamespace>WhereToEat.Catalog.Application.UnitTests</RootNamespace>
+    <AssemblyName>WhereToEat.Catalog.Application.UnitTests</AssemblyName>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="coverlet.collector">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="FluentAssertions" />
+    <PackageReference Include="NSubstitute" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Modules\Catalog\WhereToEat.Catalog.Application\WhereToEat.Catalog.Application.csproj" />
+    <ProjectReference Include="..\..\..\src\Modules\Catalog\WhereToEat.Catalog.Search.Application\WhereToEat.Catalog.Search.Application.csproj" />
+    <ProjectReference Include="..\..\..\src\Modules\Catalog\WhereToEat.Catalog.Domain\WhereToEat.Catalog.Domain.csproj" />
+    <ProjectReference Include="..\..\..\src\Shared\WhereToEat.SharedKernel\WhereToEat.SharedKernel.csproj" />
+  </ItemGroup>
+
+</Project>

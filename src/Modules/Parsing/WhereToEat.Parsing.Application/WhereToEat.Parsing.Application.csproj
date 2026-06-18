@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Parsing.Application (Step 9): the use-case layer that orchestrates the parse pipeline —
+    compliance (robots.txt + per-host rate-limit + first-party allow-list) BEFORE any fetch
+    (invariant #9), fetch via the keyed strategy, normalize (mapped persist + unmapped → quarantine),
+    geocode, then admin-protected persist (invariant #3). It defines the ports the pipeline needs
+    (IRobotsTxtGate, IHostRateLimiter, IFirstPartyAllowList, IParseQuarantineStore, the strategy
+    selector) and crosses into Catalog/Geo ONLY through WhereToEat.Contracts seams (ICatalogDishResolver,
+    ICatalogMenuWriter, IRestaurantGeocoder). Per the layer rule it references only Parsing.Domain +
+    SharedKernel + Contracts + the logging abstraction; NEVER another module's internals, NEVER
+    Infrastructure/Host.
+  -->
+  <PropertyGroup>
+    <RootNamespace>WhereToEat.Parsing.Application</RootNamespace>
+    <AssemblyName>WhereToEat.Parsing.Application</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WhereToEat.Parsing.Domain\WhereToEat.Parsing.Domain.csproj" />
+    <ProjectReference Include="..\..\..\Shared\WhereToEat.SharedKernel\WhereToEat.SharedKernel.csproj" />
+    <ProjectReference Include="..\..\..\Shared\WhereToEat.Contracts\WhereToEat.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>

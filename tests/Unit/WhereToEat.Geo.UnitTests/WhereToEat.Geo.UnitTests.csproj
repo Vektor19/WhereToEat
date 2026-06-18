@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Geo unit tests (Step 8): the NominatimGeocoder is exercised against a MOCKED HttpMessageHandler
+    serving a PINNED Nominatim JSON fixture (NO live Nominatim calls in CI), proving: success mapping
+    to the OSM-sourced GeoCoordinatesDto; the User-Agent + minimum-request-interval (rate-limit)
+    honoured (a counting/timing fake handler, a fake TimeProvider); and empty/error/out-of-range
+    responses returning a failure Result. The GeocodeRestaurantCommandHandler and the
+    GeocodeOnAddressChangedHandler are tested with a mocked IGeocoder + ICatalogCoordinateWriter,
+    proving the AddressChanged -> re-geocode seam refreshes the stored coordinates. Pure unit — no DB.
+  -->
+  <PropertyGroup>
+    <RootNamespace>WhereToEat.Geo.UnitTests</RootNamespace>
+    <AssemblyName>WhereToEat.Geo.UnitTests</AssemblyName>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="coverlet.collector">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="FluentAssertions" />
+    <PackageReference Include="NSubstitute" />
+    <PackageReference Include="Microsoft.Extensions.Options" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+    <PackageReference Include="Microsoft.Extensions.TimeProvider.Testing" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Modules\Geo\WhereToEat.Geo.Application\WhereToEat.Geo.Application.csproj" />
+    <ProjectReference Include="..\..\..\src\Modules\Geo\WhereToEat.Geo.Infrastructure\WhereToEat.Geo.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

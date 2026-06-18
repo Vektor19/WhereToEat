@@ -1,0 +1,6 @@
+{
+  "$schema": "https://xunit.net/schema/current/xunit.runner.schema.json",
+  "//": "Step 13 (Item B): disable intra-assembly parallel test collections so container-backed fixtures within one assembly never start in parallel and race Docker. Combined with the solution-level tests/WhereToEat.runsettings MaxCpuCount=1 (which serializes ASSEMBLY-level execution), the full-solution run is reliably green.",
+  "parallelizeAssembly": false,
+  "parallelizeTestCollections": false
+}

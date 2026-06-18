@@ -1,0 +1,30 @@
+# syntax=docker/dockerfile:1
+#
+# Public API host image (Step 13). Multi-stage: restore+publish on the SDK image, run on the slim
+# ASP.NET runtime. The build context is the REPO ROOT (so Directory.Build.props / Directory.Packages.props
+# and every referenced project are in scope) — build from the repo root:
+#   docker build -f deploy/Dockerfile.PublicApi -t wheretoeat-public-api .
+# (docker-compose.yml sets the context + dockerfile for you.)
+
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /src
+
+# Copy the central build/package management first so a dependency-only change layer-caches the restore.
+COPY global.json Directory.Build.props Directory.Packages.props ./
+
+# Then the full source (the solution has many cross-project references; copying all keeps it simple
+# and correct — a finer-grained csproj-only restore layer is a future optimization).
+COPY src/ ./src/
+
+RUN dotnet restore src/Hosts/WhereToEat.PublicApi/WhereToEat.PublicApi.csproj
+RUN dotnet publish src/Hosts/WhereToEat.PublicApi/WhereToEat.PublicApi.csproj \
+    -c Release -o /app/publish --no-restore /p:UseAppHost=false
+
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
+WORKDIR /app
+COPY --from=build /app/publish ./
+
+# The host binds inside the container; compose maps the published port out. ASPNETCORE_URLS is set by
+# compose env so the same image serves any port.
+EXPOSE 8080
+ENTRYPOINT ["dotnet", "WhereToEat.PublicApi.dll"]

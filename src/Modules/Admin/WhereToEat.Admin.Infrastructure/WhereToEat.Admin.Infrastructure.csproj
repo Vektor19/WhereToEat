@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Admin Infrastructure (Step 10): the EF Core data layer for the admin CRUD surface. This is the
+    ONLY project in the whole solution allowed to reference EF Core (the Step 2 EF-containment fitness
+    rule). EF maps DATABASE-FIRST onto the existing SQL-script-owned schema (Steps 4–5) via the
+    Configurations/*.cs entity configs (exact table/column names the scripts created). EF migrations
+    are DISABLED — there is no Migrations folder, the context never calls EnsureCreated/Migrate, and
+    EfMigrationsDisabledGuard fails fast at startup if EF's model diverges from the script schema.
+
+    The module uses its OWN EF entity models over the shared tables (it does NOT reference
+    Catalog.Domain or other module internals — cross-module only via WhereToEat.Contracts), so the
+    module-isolation rule (d) stays green.
+  -->
+  <PropertyGroup>
+    <RootNamespace>WhereToEat.Admin.Infrastructure</RootNamespace>
+    <AssemblyName>WhereToEat.Admin.Infrastructure</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Shared\WhereToEat.SharedKernel\WhereToEat.SharedKernel.csproj" />
+    <ProjectReference Include="..\..\..\Shared\WhereToEat.Contracts\WhereToEat.Contracts.csproj" />
+    <ProjectReference Include="..\WhereToEat.Admin.Domain\WhereToEat.Admin.Domain.csproj" />
+    <ProjectReference Include="..\WhereToEat.Admin.Application\WhereToEat.Admin.Application.csproj" />
+  </ItemGroup>
+
+</Project>

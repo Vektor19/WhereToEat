@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    SharedKernel: cross-cutting domain primitives with NO I/O and NO framework/
+    infrastructure dependencies (Result/Error, Money, GeoPoint, Haversine, base
+    Entity/ValueObject). This is the innermost layer — it references nothing in our
+    solution. Acceptance criterion: no ASP.NET / EF / Dapper / infra packages here.
+  -->
+  <PropertyGroup>
+    <RootNamespace>WhereToEat.SharedKernel</RootNamespace>
+    <AssemblyName>WhereToEat.SharedKernel</AssemblyName>
+  </PropertyGroup>
+
+
+</Project>

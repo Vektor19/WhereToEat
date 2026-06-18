@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Parsing.Domain (Step 9): the persistence-free heart of the pluggable parser subsystem. It defines
+    the parser strategy abstraction (IRestaurantParser + the normalized ParsedMenu/ParsedDish contract
+    + SourceDescriptor), the normalizer port + its mapped/unmapped split result (raw dish names map to
+    the canonical Category → Dish taxonomy; unmappable names become quarantine items — invariant #2,
+    never dropped/fatal), the ParseQuarantineItem review-queue entry, and the DECLARED-ONLY future
+    Puppeteer locator seam (a non-goal — interface only, no implementation). Per the layer rule it
+    references only SharedKernel (Money/Result); NO Catalog/Geo internals, NO EF/Dapper/HTTP — the
+    cross-module crossings happen in Application via WhereToEat.Contracts ports.
+  -->
+  <PropertyGroup>
+    <RootNamespace>WhereToEat.Parsing.Domain</RootNamespace>
+    <AssemblyName>WhereToEat.Parsing.Domain</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Shared\WhereToEat.SharedKernel\WhereToEat.SharedKernel.csproj" />
+  </ItemGroup>
+
+</Project>

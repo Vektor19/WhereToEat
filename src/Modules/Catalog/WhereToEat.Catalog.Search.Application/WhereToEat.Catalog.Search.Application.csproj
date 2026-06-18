@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Catalog.Search.Application (Step 6): the deterministic selection-building search use-cases —
+    prefix list/lookup of categories and dishes so a user can add concrete positions to their
+    selection set. STRICTLY NO NLP / free-text understanding (invariant #1): only anchored prefix
+    and id filters. It is a SUB-MODULE of Catalog (namespace WhereToEat.Catalog.Search.*), so by the
+    plan's module-grouping rule it belongs to the `Catalog` module and may reference Catalog.* freely
+    — the Step 2 cross-module fitness test treats Catalog.Search.* ↔ Catalog.* as same-module.
+    As an Application layer it references only the Catalog Domain + SharedKernel; never Infrastructure
+    or a Host.
+  -->
+  <PropertyGroup>
+    <RootNamespace>WhereToEat.Catalog.Search.Application</RootNamespace>
+    <AssemblyName>WhereToEat.Catalog.Search.Application</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WhereToEat.Catalog.Domain\WhereToEat.Catalog.Domain.csproj" />
+    <ProjectReference Include="..\WhereToEat.Catalog.Application\WhereToEat.Catalog.Application.csproj" />
+  </ItemGroup>
+
+</Project>

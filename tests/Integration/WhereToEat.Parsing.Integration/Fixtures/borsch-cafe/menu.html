@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<!--
+  Pinned local fixture for the Borsch Cafe Selenium e2e test (Step 9). It follows the shared
+  MenuHtmlConvention so BOTH parser strategies extract the same normalized ParsedMenu contract:
+  the [data-restaurant] root carries the venue facts, [data-contact] elements carry the always-shown
+  contact links, and [data-dish] rows carry the menu lines. Served LOCALLY (file:// or a tiny static
+  server) by the harness — never the live site, so the test is CI-stable.
+
+  "Узвар" is deliberately an UNMAPPABLE dish (no canonical match in the test catalog) so the same
+  fixture exercises the quarantine path: it must NOT be dropped and must NOT fail the parse, while the
+  mappable dishes still normalize.
+-->
+<html lang="uk">
+<head><meta charset="utf-8"><title>Борщ Кафе — Меню</title></head>
+<body>
+  <main data-restaurant
+        data-name="Борщ Кафе"
+        data-address="вул. Хрещатик, 1"
+        data-city="Київ"
+        data-currency="UAH">
+
+    <nav>
+      <a data-contact="website" href="https://borsch-cafe.example">Наш сайт</a>
+      <a data-contact="social" href="https://instagram.com/borschcafe">Instagram</a>
+      <a data-contact="phone" href="tel:+380441234567">+380 44 123 45 67</a>
+    </nav>
+
+    <section class="menu">
+      <div data-dish data-category="Перші страви">
+        <span class="name">Борщ</span>
+        <span class="price">95,00</span>
+        <span class="weight">350 г</span>
+      </div>
+      <div data-dish data-category="Другі страви">
+        <span class="name">Вареники</span>
+        <span class="price">120</span>
+        <span class="weight">250 г</span>
+      </div>
+      <div data-dish data-category="Напої">
+        <span class="name">Узвар</span>
+        <span class="price">45</span>
+        <span class="weight">300 мл</span>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Ratings Domain (Step 5): our own, cumulative all-time rating model (invariant #6). It owns the
+    raw per-user Rating and the per-restaurant RatingAggregate, which carries the Bayesian
+    additive-prior smoothed value `smoothed = (C*m + Sum) / (C + n)` (the single authoritative
+    quality formula that Step 7's f_quality later consumes via a DTO field — never a code reference
+    into this domain). Persistence-free: it references ONLY WhereToEat.SharedKernel — no EF/Dapper/
+    ASP.NET. The Step 2 dependency-direction fitness test (Domain -> only SharedKernel) guards this.
+
+    A restaurant is referenced here only by an opaque RestaurantRef (a Guid wrapper), NOT by the
+    Catalog module's RestaurantId, so Ratings stays independent of Catalog (module-isolation rule).
+  -->
+  <PropertyGroup>
+    <RootNamespace>WhereToEat.Ratings.Domain</RootNamespace>
+    <AssemblyName>WhereToEat.Ratings.Domain</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Shared\WhereToEat.SharedKernel\WhereToEat.SharedKernel.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,24 @@
+# syntax=docker/dockerfile:1
+#
+# Worker host image (Step 13). A SEPARATELY DEPLOYABLE process so background work (parse / geocode /
+# median / rating recompute) never competes with request serving. It runs the schema-of-record
+# migrations on startup (incl. the Quartz cluster tables) and hosts the clustered Quartz scheduler.
+# Build from the repo root:
+#   docker build -f deploy/Dockerfile.Worker -t wheretoeat-worker .
+
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /src
+
+COPY global.json Directory.Build.props Directory.Packages.props ./
+COPY src/ ./src/
+
+RUN dotnet restore src/Hosts/WhereToEat.Worker/WhereToEat.Worker.csproj
+RUN dotnet publish src/Hosts/WhereToEat.Worker/WhereToEat.Worker.csproj \
+    -c Release -o /app/publish --no-restore /p:UseAppHost=false
+
+# The worker is a generic (non-web) host, so it runs on the smaller runtime-deps + runtime image.
+FROM mcr.microsoft.com/dotnet/runtime:8.0 AS final
+WORKDIR /app
+COPY --from=build /app/publish ./
+
+ENTRYPOINT ["dotnet", "WhereToEat.Worker.dll"]

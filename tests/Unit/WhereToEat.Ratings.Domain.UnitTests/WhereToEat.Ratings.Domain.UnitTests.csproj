@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Unit tests for the Ratings domain (Step 5): exhaustive BayesianSmoothing cases (count==0 -> m,
+       count -> infinity -> raw average, a single 5-star stays near m, hundreds of 4.5 approach 4.5,
+       boundary C values, configurable m), the RatingAggregate fold math, and Rating guards. -->
+  <PropertyGroup>
+    <RootNamespace>WhereToEat.Ratings.Domain.UnitTests</RootNamespace>
+    <AssemblyName>WhereToEat.Ratings.Domain.UnitTests</AssemblyName>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="coverlet.collector">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="FluentAssertions" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Modules\Ratings\WhereToEat.Ratings.Domain\WhereToEat.Ratings.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Contracts: the cross-module integration-event and shared-DTO abstractions — the ONLY
+    types modules are allowed to share across module lines (the Step 2 fitness tests
+    enforce this). Deliberately depends on nothing in our solution (not even SharedKernel)
+    so it stays a thin, stable, framework-free contract surface that a future split-out
+    service can reference without dragging in domain primitives.
+  -->
+  <PropertyGroup>
+    <RootNamespace>WhereToEat.Contracts</RootNamespace>
+    <AssemblyName>WhereToEat.Contracts</AssemblyName>
+  </PropertyGroup>
+
+</Project>

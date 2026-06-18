@@ -1,0 +1,198 @@
+# WhereToEat / ДеПоїсти — local dev stack (Step 13).
+#
+# Brings up the backing services (SQL Server, Redis, RabbitMQ, Keycloak dev IdP) and the three hosts
+# (public API, admin API, worker). The schema-of-record migrations are applied by a one-shot `migrations`
+# service before the hosts start; the worker ALSO runs them idempotently on its own startup.
+#
+# Run from the repo root (the build context is the repo root so the central props + all projects resolve):
+#   docker compose -f deploy/docker-compose.yml --env-file deploy/.env.example up --build
+#
+# Smoke once up (health endpoints):
+#   curl http://localhost:${PUBLIC_API_PORT:-8080}/health
+#   curl http://localhost:${ADMIN_API_PORT:-8081}/health
+#
+# Scaling knobs are env-driven (see deploy/.env.example): WORKER_REPLICAS scales the worker — the
+# clustered Quartz store makes a scheduled trigger fire on exactly ONE replica.
+
+name: wheretoeat
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: ${MSSQL_SA_PASSWORD}
+    ports:
+      - "${MSSQL_PORT:-1433}:1433"
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P \"$MSSQL_SA_PASSWORD\" -Q 'SELECT 1' || /opt/mssql-tools18/bin/sqlcmd -C -S localhost -U sa -P \"$MSSQL_SA_PASSWORD\" -Q 'SELECT 1'"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+    volumes:
+      - sqlserver-data:/var/opt/mssql
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD}
+    ports:
+      - "${RABBITMQ_PORT:-5672}:5672"
+      - "${RABBITMQ_MGMT_PORT:-15672}:15672"
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:25.0
+    command: ["start-dev", "--import-realm"]
+    environment:
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+    ports:
+      - "${KEYCLOAK_PORT:-8088}:8080"
+    volumes:
+      # The dev realm export (admin + user roles/scopes, the API client, an admin test user).
+      - ./keycloak/realm-export.json:/opt/keycloak/data/import/realm-export.json:ro
+    healthcheck:
+      test: ["CMD-SHELL", "exec 3<>/dev/tcp/localhost/8080 && echo done"]
+      interval: 15s
+      timeout: 5s
+      retries: 20
+
+  # One-shot: apply the schema-of-record migrations before the hosts start. Uses the SDK image to run
+  # the standalone MigrationRunner tool against the mounted source (no extra Dockerfile needed). It
+  # exits 0 once the schema is up to date; the hosts depend on it completing successfully.
+  migrations:
+    image: mcr.microsoft.com/dotnet/sdk:8.0
+    working_dir: /src
+    environment:
+      WHERETOEAT_DB_CONNECTION: ${DB_CONNECTION}
+    command: ["dotnet", "run", "--project", "tools/WhereToEat.MigrationRunner/WhereToEat.MigrationRunner.csproj", "-c", "Release"]
+    volumes:
+      - ../:/src
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+
+  public-api:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile.PublicApi
+    image: wheretoeat-public-api
+    environment:
+      ASPNETCORE_URLS: "http://+:8080"
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT:-Development}
+      ConnectionStrings__Catalog: ${DB_CONNECTION}
+      Redis__Enabled: "true"
+      Redis__ConnectionString: ${REDIS_CONNECTION}
+      Messaging__Transport: ${MESSAGING_TRANSPORT}
+      Messaging__Host: rabbitmq
+      Messaging__Username: ${RABBITMQ_USER}
+      Messaging__Password: ${RABBITMQ_PASSWORD}
+      Authentication__Oidc__Authority: ${OIDC_AUTHORITY}
+      Authentication__Oidc__Audience: ${OIDC_AUDIENCE}
+      Authentication__Oidc__RequireHttpsMetadata: "false"
+      Analytics__SaltMasterSecret: ${ANALYTICS_SALT_SECRET}
+      OpenTelemetry__ConsoleExporter: "true"
+    ports:
+      - "${PUBLIC_API_PORT:-8080}:8080"
+    deploy:
+      replicas: ${PUBLIC_API_REPLICAS:-1}
+      resources:
+        limits:
+          cpus: "${PUBLIC_API_CPU_LIMIT:-1.0}"
+          memory: ${PUBLIC_API_MEM_LIMIT:-512M}
+    depends_on:
+      migrations:
+        condition: service_completed_successfully
+      redis:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      keycloak:
+        condition: service_started
+
+  admin-api:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile.AdminApi
+    image: wheretoeat-admin-api
+    environment:
+      ASPNETCORE_URLS: "http://+:8080"
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT:-Development}
+      ConnectionStrings__Catalog: ${DB_CONNECTION}
+      Redis__Enabled: "true"
+      Redis__ConnectionString: ${REDIS_CONNECTION}
+      Messaging__Transport: ${MESSAGING_TRANSPORT}
+      Messaging__Host: rabbitmq
+      Messaging__Username: ${RABBITMQ_USER}
+      Messaging__Password: ${RABBITMQ_PASSWORD}
+      Authentication__Oidc__Authority: ${OIDC_AUTHORITY}
+      Authentication__Oidc__Audience: ${OIDC_AUDIENCE}
+      Authentication__Oidc__RequireHttpsMetadata: "false"
+      OpenTelemetry__ConsoleExporter: "true"
+    ports:
+      - "${ADMIN_API_PORT:-8081}:8080"
+    deploy:
+      replicas: ${ADMIN_API_REPLICAS:-1}
+      resources:
+        limits:
+          cpus: "${ADMIN_API_CPU_LIMIT:-1.0}"
+          memory: ${ADMIN_API_MEM_LIMIT:-512M}
+    depends_on:
+      migrations:
+        condition: service_completed_successfully
+      redis:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      keycloak:
+        condition: service_started
+
+  worker:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile.Worker
+    image: wheretoeat-worker
+    environment:
+      DOTNET_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT:-Development}
+      ConnectionStrings__Catalog: ${DB_CONNECTION}
+      Redis__Enabled: "true"
+      Redis__ConnectionString: ${REDIS_CONNECTION}
+      Messaging__Transport: ${MESSAGING_TRANSPORT}
+      Messaging__Host: rabbitmq
+      Messaging__Username: ${RABBITMQ_USER}
+      Messaging__Password: ${RABBITMQ_PASSWORD}
+      OpenTelemetry__ConsoleExporter: "true"
+    # Scale the worker freely: the clustered Quartz store fires each scheduled trigger on exactly ONE
+    # replica (set WORKER_REPLICAS in the env file).
+    deploy:
+      replicas: ${WORKER_REPLICAS:-1}
+      resources:
+        limits:
+          cpus: "${WORKER_CPU_LIMIT:-1.0}"
+          memory: ${WORKER_MEM_LIMIT:-512M}
+    depends_on:
+      migrations:
+        condition: service_completed_successfully
+      redis:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+
+volumes:
+  sqlserver-data:

@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Catalog Domain (Step 3): the persistence-free core ER model — the two-level taxonomy
+    (Category → Dish, invariant #2), Restaurant aggregate (Address, Coordinates, ContactLinks,
+    MenuItems), and the admin > parser DoNotParse flag (invariant #3). This same domain also
+    backs the Catalog.Search sub-module (no separate Search domain). It is the innermost layer
+    of the Catalog module: it references ONLY WhereToEat.SharedKernel — no ASP.NET / EF / Dapper.
+    The Step 2 dependency-direction fitness test (Domain → only SharedKernel) guards this.
+  -->
+  <PropertyGroup>
+    <RootNamespace>WhereToEat.Catalog.Domain</RootNamespace>
+    <AssemblyName>WhereToEat.Catalog.Domain</AssemblyName>
+  </PropertyGroup>
+
+  <!--
+    Photo.Rehydrate is internal (persistence-only): it reconstructs the real-but-revoked state from
+    stored flags, which the public creation factories cannot express. The Dapper-backed
+    Catalog.Infrastructure needs it to read photos back, and the domain unit tests round-trip that state.
+  -->
+  <ItemGroup>
+    <InternalsVisibleTo Include="WhereToEat.Catalog.Infrastructure" />
+    <InternalsVisibleTo Include="WhereToEat.Catalog.Domain.UnitTests" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Shared\WhereToEat.SharedKernel\WhereToEat.SharedKernel.csproj" />
+  </ItemGroup>
+
+</Project>

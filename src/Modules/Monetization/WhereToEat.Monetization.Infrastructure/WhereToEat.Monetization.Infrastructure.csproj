@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Monetization.Infrastructure (Step 14, future-facing — no real billing, a non-goal). It carries the
+    Dapper-backed adapters for the IVerifiedStatusRepository / IAdPlacementRepository domain ports over
+    the SQL-script-owned `monetization` schema (Step 5's 0008 + Step 14's 0014 indexes), the dev no-op
+    IPaymentGateway (the SOLE payment touch-point — no provider), and the AddMonetizationModule DI
+    entry the admin host composes. It uses Dapper ONLY and NEVER EF Core (EF is Admin.Infrastructure-
+    only — the Step 2 EF-containment fitness test guards this; this project is referenced by the
+    architecture tests). Per the layer + module-isolation rules it references only its own
+    Application/Domain + SharedKernel + the shared BuildingBlocks.Persistence plumbing — never another
+    module's internals.
+  -->
+  <PropertyGroup>
+    <RootNamespace>WhereToEat.Monetization.Infrastructure</RootNamespace>
+    <AssemblyName>WhereToEat.Monetization.Infrastructure</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WhereToEat.Monetization.Application\WhereToEat.Monetization.Application.csproj" />
+    <ProjectReference Include="..\WhereToEat.Monetization.Domain\WhereToEat.Monetization.Domain.csproj" />
+    <ProjectReference Include="..\..\..\Shared\WhereToEat.BuildingBlocks.Persistence\WhereToEat.BuildingBlocks.Persistence.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,61 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <!--
+    Admin API integration tests (Step 10): drive the admin host in-process via WebApplicationFactory
+    with a real SQL Server (Testcontainers). They assert: the EF database-first CRUD round-trips over
+    the script-created schema; the EF-migrations-disabled startup guard (no migrations + every mapped
+    table present, and a fail-fast on a missing table); admin-only authorization (admin token → 200,
+    user token → 403, anonymous → 401, via the test signing key — no live IdP); EditAddress raises the
+    Step 8 re-geocode flow (observable); and the END-TO-END protection test — set DoNotUpdate/DoNotParse
+    via the admin API, run the Step 9 parse against a fixture, assert the protected data is NOT
+    overwritten (cross-checks invariant #3 across modules). Test-project references to BOTH Admin and
+    Parsing are intentional and allowed (test projects are not policed by the module-isolation rule).
+  -->
+  <PropertyGroup>
+    <RootNamespace>WhereToEat.AdminApi.Integration</RootNamespace>
+    <AssemblyName>WhereToEat.AdminApi.Integration</AssemblyName>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="coverlet.collector">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="FluentAssertions" />
+    <PackageReference Include="NSubstitute" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" />
+    <PackageReference Include="Dapper" />
+    <PackageReference Include="Microsoft.Data.SqlClient" />
+    <PackageReference Include="Testcontainers.MsSql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Hosts\WhereToEat.AdminApi\WhereToEat.AdminApi.csproj" />
+    <ProjectReference Include="..\..\..\src\Modules\Admin\WhereToEat.Admin.Infrastructure\WhereToEat.Admin.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\src\Shared\WhereToEat.BuildingBlocks.Migrations\WhereToEat.BuildingBlocks.Migrations.csproj" />
+    <ProjectReference Include="..\..\..\src\Shared\WhereToEat.BuildingBlocks.Auth\WhereToEat.BuildingBlocks.Auth.csproj" />
+    <!-- The end-to-end protection test runs the Step 9 parse pipeline against a fixture; a test
+         project may reference both Admin and Parsing (test references are not module-policed). -->
+    <ProjectReference Include="..\..\..\src\Modules\Parsing\WhereToEat.Parsing.Application\WhereToEat.Parsing.Application.csproj" />
+    <ProjectReference Include="..\..\..\src\Modules\Parsing\WhereToEat.Parsing.Infrastructure\WhereToEat.Parsing.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\src\Shared\WhereToEat.Contracts\WhereToEat.Contracts.csproj" />
+    <!-- The end-to-end protection test now exercises the PRODUCTION Catalog parsing adapters over a
+         real SqlConnectionFactory (not local test doubles), so the protection persist path it
+         asserts is the one that actually ships. -->
+    <ProjectReference Include="..\..\..\src\Modules\Catalog\WhereToEat.Catalog.Infrastructure\WhereToEat.Catalog.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\src\Shared\WhereToEat.BuildingBlocks.Persistence\WhereToEat.BuildingBlocks.Persistence.csproj" />
+  </ItemGroup>
+
+</Project>

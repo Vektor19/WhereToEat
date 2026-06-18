@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Analytics Domain (Step 5 — domain SHAPE only; the ingest pipeline is Step 11). It owns the
+    anonymized AnalyticsEvent aggregate and the retain/hash/drop value objects: EventDimensions
+    (retain), HashedActorId (rotating-salted hash), Geohash (coarse/neighbourhood-grade) and
+    HourBucket (hour-truncated time). By construction the aggregate cannot hold a raw user id, a
+    precise coordinate, or a minute-grade timestamp (invariant #11 / privacy). Persistence-free:
+    references ONLY WhereToEat.SharedKernel. The Step 2 dependency-direction fitness test
+    (Domain -> only SharedKernel) guards this.
+  -->
+  <PropertyGroup>
+    <RootNamespace>WhereToEat.Analytics.Domain</RootNamespace>
+    <AssemblyName>WhereToEat.Analytics.Domain</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Shared\WhereToEat.SharedKernel\WhereToEat.SharedKernel.csproj" />
+  </ItemGroup>
+
+</Project>

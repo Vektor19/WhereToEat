@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    BuildingBlocks.Persistence (Step 4): the thin, shared Dapper/SqlClient plumbing every
+    module's Infrastructure uses for the hot/read paths — a connection factory abstraction
+    (ISqlConnectionFactory) so call sites depend on an interface, not on a concrete provider.
+    This is a SHARED building block (not a module), so per the layer rules a module's
+    Infrastructure may reference it. It deliberately uses Dapper + Microsoft.Data.SqlClient
+    and NEVER EF Core (EF is Admin.Infrastructure-only — Step 2 EF-containment fitness test).
+  -->
+  <PropertyGroup>
+    <RootNamespace>WhereToEat.BuildingBlocks.Persistence</RootNamespace>
+    <AssemblyName>WhereToEat.BuildingBlocks.Persistence</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" />
+    <PackageReference Include="Microsoft.Data.SqlClient" />
+  </ItemGroup>
+
+</Project>

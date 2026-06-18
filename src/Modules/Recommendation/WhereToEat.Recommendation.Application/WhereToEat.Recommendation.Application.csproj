@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Recommendation Application (Step 7): the use-case layer for POST /recommend. RecommendQuery's
+    handler orchestrates the 5-step pipeline by resolving the match/sort/filter strategies BY KEY
+    (invariant #4 — pluggable) and reading the precomputed price median through the
+    IPriceMedianProvider port; it loads candidates through the IRecommendationCandidateSource port,
+    whose RecommendationCandidate DTO carries the venue's smoothed rating as a PLAIN FIELD — so the
+    engine consumes that precomputed value and NEVER references Ratings.Domain (the cross-module
+    boundary the Step 2 fitness test guards). Per the layer rule it references only the
+    Recommendation Domain + SharedKernel + Contracts (the public request/response shapes) + the DI
+    abstractions for keyed resolution; NEVER Infrastructure or a Host.
+  -->
+  <PropertyGroup>
+    <RootNamespace>WhereToEat.Recommendation.Application</RootNamespace>
+    <AssemblyName>WhereToEat.Recommendation.Application</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WhereToEat.Recommendation.Domain\WhereToEat.Recommendation.Domain.csproj" />
+    <ProjectReference Include="..\..\..\Shared\WhereToEat.Contracts\WhereToEat.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>

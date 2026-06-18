@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Users Domain (Step 5): the minimal, PII-free user model (invariant #11). It owns the internal
+    UserId, the opaque ExternalSubject link to the external IdP identity, and the UserRole mapping.
+    No email/name/phone is stored here — identity/PII lives at the IdP, and nothing about a user is
+    ever venue-exposed. Persistence-free: it references ONLY WhereToEat.SharedKernel — no EF/Dapper/
+    ASP.NET. The Step 2 dependency-direction fitness test (Domain -> only SharedKernel) guards this.
+  -->
+  <PropertyGroup>
+    <RootNamespace>WhereToEat.Users.Domain</RootNamespace>
+    <AssemblyName>WhereToEat.Users.Domain</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Shared\WhereToEat.SharedKernel\WhereToEat.SharedKernel.csproj" />
+  </ItemGroup>
+
+</Project>
