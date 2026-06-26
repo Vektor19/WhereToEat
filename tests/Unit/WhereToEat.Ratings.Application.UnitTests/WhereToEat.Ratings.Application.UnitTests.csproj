@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Ratings Application unit tests (Step 21): the SubmitRatingCommandHandler with a MOCKED
+    IRatingRepository write port + IRatingGivenPublisher seam (NSubstitute) and a fixed FakeTimeProvider.
+    They assert the use-case logic in isolation — create when no rating exists, revise when one does, an
+    out-of-range score returns the domain validation failure (without persisting/publishing), and
+    RatingGiven is published exactly once on success. No database, no MassTransit — the ports are
+    substituted.
+  -->
+  <PropertyGroup>
+    <RootNamespace>WhereToEat.Ratings.Application.UnitTests</RootNamespace>
+    <AssemblyName>WhereToEat.Ratings.Application.UnitTests</AssemblyName>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="coverlet.collector">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="FluentAssertions" />
+    <PackageReference Include="NSubstitute" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Modules\Ratings\WhereToEat.Ratings.Application\WhereToEat.Ratings.Application.csproj" />
+    <ProjectReference Include="..\..\..\src\Modules\Ratings\WhereToEat.Ratings.Domain\WhereToEat.Ratings.Domain.csproj" />
+    <ProjectReference Include="..\..\..\src\Shared\WhereToEat.SharedKernel\WhereToEat.SharedKernel.csproj" />
+    <ProjectReference Include="..\..\..\src\Shared\WhereToEat.Contracts\WhereToEat.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>

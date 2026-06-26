@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 90" role="img" aria-hidden="true">
+  <!--
+    Generic dish/category illustration — our OWN content (invariant #8). Shown on every card by
+    default; swapped for a real photo only where the backend signals permission. No third-party imagery.
+  -->
+  <rect width="160" height="90" fill="#eef1ec" />
+  <circle cx="80" cy="45" r="26" fill="#d6ddd0" />
+  <circle cx="80" cy="45" r="17" fill="#c2cbb8" />
+  <path
+    d="M52 30v30M55 30v12c0 2-3 2-3 0M58 30v30"
+    fill="none"
+    stroke="#9aa890"
+    stroke-width="2.5"
+    stroke-linecap="round"
+  />
+  <path
+    d="M104 30c4 0 6 4 6 9s-2 9-6 9v12"
+    fill="none"
+    stroke="#9aa890"
+    stroke-width="2.5"
+    stroke-linecap="round"
+  />
+</svg>

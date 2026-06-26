@@ -1,0 +1,195 @@
+// =============================================================================
+// Design tokens — the single source of truth for the visual language.
+//
+// Every component consumes these CSS custom properties (`var(--dp-*)`), never a
+// raw hex / px / unitless literal (invariant: DRY + brand-tunable later without
+// architectural change; CLAUDE.md §10 / design-doc "Design tokens & color
+// harmony"). The Material 3 theme (`_theme.scss`) is *derived* from these same
+// tokens, so retuning the brand is a one-file change here.
+//
+// Layers:
+//   1. Primitive palette — raw brand/neutral ramps (the only place raw hex lives).
+//   2. Semantic color tokens — role-based pairs (surface/on-surface, …) chosen so
+//      every text-on-background pair below meets WCAG AA (≥ 4.5:1 for body text).
+//   3. Spacing / radius / typography / elevation / motion / layout scales.
+//
+// Accessibility note: the semantic foreground/background pairs are picked to
+// clear WCAG AA. The contrast guarantee is asserted by a unit test
+// (`tokens.contrast.spec.ts`) that reads the same primitive values from
+// `tokens.values.ts`, so a regression here fails CI.
+// =============================================================================
+
+// -----------------------------------------------------------------------------
+// Responsive breakpoints (Sass variables, NOT CSS custom properties).
+//
+// `@media` expressions cannot read CSS custom properties, so the single source of
+// truth for breakpoints must be Sass-level. Components that need a media query
+// `@use` this file and reference these (`tokens.$dp-breakpoint-sm`, …) instead of
+// hardcoding raw px — keeping breakpoints tokenized like every other value.
+// -----------------------------------------------------------------------------
+$dp-breakpoint-sm: 600px; // phone → tablet
+$dp-breakpoint-md: 1024px; // tablet → desktop
+
+:root {
+  // ---------------------------------------------------------------------------
+  // 1. Primitive palette (raw values — confined to this block).
+  //    Brand = a warm appetite-friendly amber/terracotta (food domain); neutrals
+  //    are a slightly-warm gray ramp so the UI reads calm and on-trend European.
+  // ---------------------------------------------------------------------------
+  --dp-palette-brand-10: #2b1700; // darkest brand (on-light accents / pressed)
+  --dp-palette-brand-40: #8a4b00; // brand core (meets AA on white as text)
+  --dp-palette-brand-50: #a85b00;
+  --dp-palette-brand-90: #ffddb8; // brand container
+  --dp-palette-brand-99: #fffaf5; // brand-tinted surface
+
+  --dp-palette-accent-10: #001e2e; // darkest accent (text on accent container)
+  --dp-palette-accent-40: #00658f; // teal-blue secondary accent
+  --dp-palette-accent-90: #c7e7ff; // accent container
+
+  --dp-palette-neutral-0: #000000;
+  --dp-palette-neutral-10: #1f1b16; // near-black ink
+  --dp-palette-neutral-30: #514537; // muted ink (≥ AA on white)
+  --dp-palette-neutral-50: #6b6155; // secondary ink (≥ AA on white for body)
+  --dp-palette-neutral-80: #d8cdbf; // borders / dividers
+  --dp-palette-neutral-90: #ebe1d4; // subtle surface
+  --dp-palette-neutral-95: #f6efe4;
+  --dp-palette-neutral-99: #fffbf5; // page surface
+  --dp-palette-neutral-100: #ffffff;
+
+  --dp-palette-success-40: #2f6b2f;
+  --dp-palette-warning-40: #8a5300;
+  --dp-palette-error-10: #410002; // darkest error (text on error container)
+  --dp-palette-error-40: #ba1a1a; // AA on white
+  --dp-palette-error-90: #ffdad6; // error container
+
+  // ---------------------------------------------------------------------------
+  // 2. Semantic color tokens (role-based — what components actually reference).
+  // ---------------------------------------------------------------------------
+  --dp-color-primary: var(--dp-palette-brand-40);
+  --dp-color-on-primary: var(--dp-palette-neutral-100);
+  --dp-color-primary-container: var(--dp-palette-brand-90);
+  --dp-color-on-primary-container: var(--dp-palette-brand-10);
+
+  --dp-color-accent: var(--dp-palette-accent-40);
+  --dp-color-on-accent: var(--dp-palette-neutral-100);
+  // Accent container — the tonal surface used by selected chips and other M3
+  // "container" roles (secondary/tertiary-container). Its on- pair is dark ink
+  // for AA contrast on the light container.
+  --dp-color-accent-container: var(--dp-palette-accent-90);
+  --dp-color-on-accent-container: var(--dp-palette-accent-10);
+
+  --dp-color-surface: var(--dp-palette-neutral-99);
+  --dp-color-on-surface: var(--dp-palette-neutral-10); // body text on surface
+  --dp-color-surface-variant: var(--dp-palette-neutral-95);
+  --dp-color-on-surface-variant: var(--dp-palette-neutral-30); // secondary text
+  --dp-color-surface-muted: var(--dp-palette-neutral-90);
+
+  --dp-color-outline: var(--dp-palette-neutral-50);
+  --dp-color-outline-variant: var(--dp-palette-neutral-80);
+
+  // Scrim — the dimmed overlay behind a modal/dialog (M3 scrim role). Semi-opaque
+  // neutral ink so the page recedes while the dialog surface stays readable.
+  --dp-color-scrim: rgba(0, 0, 0, 0.48);
+
+  --dp-color-success: var(--dp-palette-success-40);
+  --dp-color-warning: var(--dp-palette-warning-40);
+  --dp-color-error: var(--dp-palette-error-40);
+  --dp-color-on-error: var(--dp-palette-neutral-100);
+  // Error container — the tonal error surface used by M3 error-container roles
+  // (e.g. form-field error hover). Dark error ink on a light error tint, AA-safe.
+  --dp-color-error-container: var(--dp-palette-error-90);
+  --dp-color-on-error-container: var(--dp-palette-error-10);
+
+  // Focus ring — high-contrast, used by the global :focus-visible style (WCAG 2.4.7).
+  --dp-color-focus-ring: var(--dp-palette-accent-40);
+
+  // ---------------------------------------------------------------------------
+  // 3a. Spacing scale (4px base — mobile-first rhythm).
+  // ---------------------------------------------------------------------------
+  --dp-space-0: 0;
+  --dp-space-1: 0.25rem; // 4px
+  --dp-space-2: 0.5rem; // 8px
+  --dp-space-3: 0.75rem; // 12px
+  --dp-space-4: 1rem; // 16px
+  --dp-space-5: 1.5rem; // 24px
+  --dp-space-6: 2rem; // 32px
+  --dp-space-8: 3rem; // 48px
+
+  // ---------------------------------------------------------------------------
+  // 3b. Radius scale.
+  // ---------------------------------------------------------------------------
+  --dp-radius-sm: 0.25rem;
+  --dp-radius-md: 0.75rem;
+  --dp-radius-lg: 1.25rem;
+  --dp-radius-pill: 999px;
+
+  // Border widths (hairline divider / standard border).
+  --dp-border-width-hairline: 1px;
+
+  // ---------------------------------------------------------------------------
+  // 3c. Typography scale (fluid-ish, rem-based so it respects user zoom — WCAG 1.4.4).
+  // ---------------------------------------------------------------------------
+  --dp-font-family-base:
+    'Inter', 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', sans-serif;
+  --dp-font-weight-regular: 400;
+  --dp-font-weight-medium: 500;
+  --dp-font-weight-bold: 700;
+
+  --dp-font-size-caption: 0.75rem; // 12px
+  --dp-font-size-body: 1rem; // 16px — base body size
+  --dp-font-size-subtitle: 1.125rem; // 18px
+  --dp-font-size-title: 1.5rem; // 24px
+  --dp-font-size-headline: 2rem; // 32px
+
+  --dp-line-height-tight: 1.25;
+  --dp-line-height-base: 1.5;
+
+  // ---------------------------------------------------------------------------
+  // 3d. Elevation (shadow tokens — surfaces lift consistently).
+  // ---------------------------------------------------------------------------
+  --dp-elevation-0: none;
+  --dp-elevation-1: 0 1px 2px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06);
+  --dp-elevation-2: 0 2px 6px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.08);
+  --dp-elevation-3: 0 6px 16px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.08);
+
+  // ---------------------------------------------------------------------------
+  // 3e. Motion.
+  // ---------------------------------------------------------------------------
+  --dp-motion-fast: 120ms;
+  --dp-motion-base: 200ms;
+  --dp-motion-emphasized: cubic-bezier(0.2, 0, 0, 1);
+
+  // ---------------------------------------------------------------------------
+  // 3f. Layout primitives (mobile-first responsive shell).
+  // ---------------------------------------------------------------------------
+  --dp-layout-content-max: 72rem; // desktop content cap (~1152px)
+  --dp-layout-topbar-height: 3.5rem;
+  --dp-layout-gutter: var(--dp-space-4);
+  --dp-layout-portal-nav-width: 16rem; // operator-portal side-nav width (Step 18)
+
+  // Result-card thumbnail column (image size on the ranked-list card) — tokenized
+  // so the card never hardcodes a raw px width. The `-sm` value is the compact
+  // size used below the `$dp-breakpoint-sm` breakpoint.
+  --dp-card-thumb-size: 6rem; // 96px
+  --dp-card-thumb-size-sm: 4.5rem; // 72px
+
+  // Responsive auto-fit column minimums — the `minmax(<min>, 1fr)` floor a
+  // `repeat(auto-fit, …)` grid uses to decide how many columns fit before it
+  // wraps. Tokenized so metric grids never hardcode a raw rem width.
+  --dp-column-min-width-sm: 8rem; // compact stat tiles
+  --dp-column-min-width-md: 14rem; // ranked-table columns
+  --dp-column-min-width-lg: 18rem; // dashboard metric panels
+
+  // Form-field flex-basis floors — the responsive wrap width a form control gets
+  // in a `flex-wrap` row before it drops to the next line. Tokenized so portal
+  // forms never hardcode a raw rem flex-basis / min-width (Step 25 hardening).
+  --dp-field-basis-xs: 6rem; // narrow numeric field (price / weight)
+  --dp-field-basis-sm: 10rem; // short field (currency / category)
+  --dp-field-basis-md: 12rem; // single-line text field minimum
+  --dp-field-basis-lg: 16rem; // wide field (id input) flex-basis
+  --dp-field-basis-xl: 20rem; // primary field (dish picker) flex-basis
+
+  // Z-index scale.
+  --dp-z-topbar: 100;
+  --dp-z-modal: 1000;
+}

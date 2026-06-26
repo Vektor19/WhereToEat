@@ -1,0 +1,17 @@
+/* TypeScript config for the Playwright e2e suite.
+ *
+ * Kept separate from the Angular unit-test tsconfigs (which are scoped to `projects/**` and use
+ * the Vitest type globals) so the e2e specs typecheck under strict mode with the Playwright/Node
+ * types only. Playwright transpiles the specs itself at runtime; this config is for editor and CI
+ * typechecking (`tsc -p e2e/tsconfig.json --noEmit`). */
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../out-tsc/e2e",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "types": [],
+    "noEmit": true
+  },
+  "include": ["**/*.ts"]
+}

@@ -2,6 +2,7 @@ using WhereToEat.Admin.Application.Abstractions;
 using WhereToEat.Admin.Infrastructure;
 using WhereToEat.AdminApi;
 using WhereToEat.AdminApi.Endpoints;
+using WhereToEat.Analytics.Infrastructure.DependencyInjection;
 using WhereToEat.BuildingBlocks.Auth;
 using WhereToEat.BuildingBlocks.Caching;
 using WhereToEat.BuildingBlocks.Messaging;
@@ -37,6 +38,13 @@ builder.Services.AddCatalogPersistence(connectionString);
 // real-photo gate + sets the tier; nothing here feeds organic ranking (invariant #10) or the
 // always-free contact links (§5.8). The admin endpoints below manage it under the admin-only policy.
 builder.Services.AddMonetizationModule(connectionString);
+
+// Step 23: the analytics READ path only (the aggregates-only IAnalyticsRollupReader the §7.5
+// operator-dashboard endpoints read). The admin host never ingests events, so AddAnalyticsReadModule
+// wires the rollup reader + the shared connection factory WITHOUT the ingest/anonymizer stack. Without
+// this registration IAnalyticsRollupReader would not resolve on the admin host. The endpoints below
+// run under the same admin-only policy and return grouped aggregates only (invariant #11).
+builder.Services.AddAnalyticsReadModule(connectionString);
 
 // The in-process AddressChanged → re-geocode dispatcher (the Step 8 seam). Step 13 swaps this for a
 // MassTransit publish without touching the admin use-case.
@@ -88,6 +96,7 @@ app.MapAdminCatalogEndpoints();
 app.MapProtectionEndpoints();
 app.MapPhotoEndpoints();
 app.MapMonetizationEndpoints();
+app.MapAnalyticsDashboardEndpoints();
 
 await app.RunAsync();
 

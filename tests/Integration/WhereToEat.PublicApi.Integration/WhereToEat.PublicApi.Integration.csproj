@@ -33,6 +33,11 @@
     <PackageReference Include="Dapper" />
     <PackageReference Include="Microsoft.Data.SqlClient" />
     <PackageReference Include="Testcontainers.MsSql" />
+    <!-- Step 22: the rating endpoint test observes the RatingGiven publish through the MassTransit
+         in-memory test harness. The fixture swaps the host's real bus for AddMassTransitTestHarness
+         (ITestHarness / harness.Published) so the publish can be asserted without a broker. -->
+    <PackageReference Include="MassTransit" />
+    <PackageReference Include="MassTransit.TestFramework" />
   </ItemGroup>
 
   <ItemGroup>
@@ -45,6 +50,11 @@
          through the Map endpoint path and asserts it is never touched, and statically inspects
          CacheKeys for any Google-shaped key. -->
     <ProjectReference Include="..\..\..\src\Shared\WhereToEat.BuildingBlocks.Caching\WhereToEat.BuildingBlocks.Caching.csproj" />
+    <!-- Step 22: the fixture re-registers the host's two cross-cutting consumers on the test harness
+         when it swaps the bus, so the consumer types must be referenced here. -->
+    <ProjectReference Include="..\..\..\src\Shared\WhereToEat.BuildingBlocks.Messaging\WhereToEat.BuildingBlocks.Messaging.csproj" />
+    <!-- The RatingGiven integration event the harness asserts was published. -->
+    <ProjectReference Include="..\..\..\src\Shared\WhereToEat.Contracts\WhereToEat.Contracts.csproj" />
   </ItemGroup>
 
 </Project>

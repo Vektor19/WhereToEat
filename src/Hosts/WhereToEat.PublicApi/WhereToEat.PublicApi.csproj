@@ -35,6 +35,12 @@
          to reference module Infrastructure for composition. -->
     <ProjectReference Include="..\..\Modules\Analytics\WhereToEat.Analytics.Application\WhereToEat.Analytics.Application.csproj" />
     <ProjectReference Include="..\..\Modules\Analytics\WhereToEat.Analytics.Infrastructure\WhereToEat.Analytics.Infrastructure.csproj" />
+    <!-- Step 22: the Ratings module's write path — the Application submit use-case + the Infrastructure
+         AddRatingsApplication composition (the Dapper write port + MassTransit RatingGiven publisher).
+         The Public host wires AddRatingsApplication (NOT AddRatingsPersistence, the Worker path). As a
+         Host this is the place allowed to reference module Infrastructure for composition. -->
+    <ProjectReference Include="..\..\Modules\Ratings\WhereToEat.Ratings.Application\WhereToEat.Ratings.Application.csproj" />
+    <ProjectReference Include="..\..\Modules\Ratings\WhereToEat.Ratings.Infrastructure\WhereToEat.Ratings.Infrastructure.csproj" />
     <!-- Step 13: the Geo module supplies the IRestaurantGeocoder adapter the bus's
          geocode-on-AddressChanged consumer resolves to (the consumer itself references only Contracts). -->
     <ProjectReference Include="..\..\Modules\Geo\WhereToEat.Geo.Application\WhereToEat.Geo.Application.csproj" />

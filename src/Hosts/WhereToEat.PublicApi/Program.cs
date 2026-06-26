@@ -7,6 +7,7 @@ using WhereToEat.Catalog.Infrastructure.DependencyInjection;
 using WhereToEat.Catalog.Search.Application.DependencyInjection;
 using WhereToEat.Geo.Infrastructure;
 using WhereToEat.PublicApi.Endpoints;
+using WhereToEat.Ratings.Infrastructure.DependencyInjection;
 using WhereToEat.Recommendation.Infrastructure.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -63,6 +64,12 @@ builder.Services.AddRedisCache(builder.Configuration);
 builder.Services.AddGeoModule(builder.Configuration);
 builder.Services.AddMessaging(builder.Configuration);
 
+// Step 22: the Ratings write path (the authenticated POST rating endpoint). AddRatingsApplication —
+// NOT AddRatingsPersistence (that is the Worker host's aggregate-recompute path) — registers the
+// IRatingRepository write port + Dapper adapter + the SubmitRatingCommandHandler + the MassTransit-backed
+// RatingGiven publisher. It is wired AFTER AddMessaging because the publisher resolves IPublishEndpoint.
+builder.Services.AddRatingsApplication(connectionString);
+
 // --- Cross-cutting host concerns -------------------------------------------------------------
 builder.Services.AddHealthChecks();
 builder.Services.AddEndpointsApiExplorer();
@@ -96,6 +103,10 @@ app.MapAnalyticsEndpoints();
 
 // The authenticated seam (the read endpoints above stay anonymous).
 app.MapAuthProbeEndpoints();
+
+// Step 22: the authenticated rating-submit endpoint (POST /restaurants/{id}/ratings) — 401 anonymous,
+// maps the IdP sub -> an opaque user ref, drives the submit use-case, publishes RatingGiven (invariant #6).
+app.MapRatingEndpoints();
 
 app.Run();
 

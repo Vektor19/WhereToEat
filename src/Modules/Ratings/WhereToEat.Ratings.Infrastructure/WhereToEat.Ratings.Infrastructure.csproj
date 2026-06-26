@@ -6,9 +6,16 @@
     The per-restaurant aggregate read is a HOT PATH (the recommendation candidate source joins the
     materialized rollup), so the query is a single keyed lookup. It uses Dapper ONLY and NEVER EF
     Core (EF is Admin.Infrastructure-only — the Step 2 EF-containment fitness test guards this; this
-    project is referenced by the architecture tests). It references only its own Domain, SharedKernel
-    (transitively, via the Domain), and the shared BuildingBlocks.Persistence plumbing — never another
+    project is referenced by the architecture tests). It references only its own Domain/Application,
+    SharedKernel (transitively), and the shared BuildingBlocks.Persistence plumbing — never another
     module's internals (module-isolation rule).
+
+    Step 21 adds the write side: the Dapper IRatingRepository adapter, a MassTransit-backed
+    IRatingGivenPublisher adapter (RatingGiven is a Contracts integration event — a shared family, not
+    another module), and the AddRatingsApplication DI extension that wires the submit use-case. That
+    extension lives here (not in Ratings.Application) so it can register both the Application handler and
+    the Infrastructure adapters without making Application depend on Infrastructure (the
+    Application_DependsOnNoInfrastructureAndNoHost fitness test) — mirroring AddAdminModule.
   -->
   <PropertyGroup>
     <RootNamespace>WhereToEat.Ratings.Infrastructure</RootNamespace>
@@ -17,6 +24,7 @@
 
   <ItemGroup>
     <PackageReference Include="Dapper" />
+    <PackageReference Include="MassTransit" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
   </ItemGroup>
 
@@ -26,6 +34,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\WhereToEat.Ratings.Domain\WhereToEat.Ratings.Domain.csproj" />
+    <ProjectReference Include="..\WhereToEat.Ratings.Application\WhereToEat.Ratings.Application.csproj" />
     <ProjectReference Include="..\..\..\Shared\WhereToEat.BuildingBlocks.Persistence\WhereToEat.BuildingBlocks.Persistence.csproj" />
   </ItemGroup>
 

@@ -1,0 +1,134 @@
+// =============================================================================
+// Global stylesheet — composes the design system.
+//
+//   1. Design tokens (single source of truth for color/space/type/radius/…).
+//   2. The Material 3 theme derived from those tokens.
+//   3. Material's core (ripple, elevation, base typography classes).
+//   4. Global element defaults, mobile-first base, and accessible focus styles.
+//
+// Components MUST consume `var(--dp-*)` tokens (or Material system tokens that
+// resolve to them) — never raw hex/px literals.
+// =============================================================================
+
+@use '@angular/material' as mat;
+@use './styles/tokens';
+@use './styles/theme';
+
+// Material core: ripple/elevation/overlay base styles needed by components.
+@include mat.elevation-classes();
+@include mat.app-background();
+
+// ---------------------------------------------------------------------------
+// Global resets & base (mobile-first).
+// ---------------------------------------------------------------------------
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+}
+
+html {
+  // rem base = 16px; rem-based type respects user zoom / OS font size (WCAG 1.4.4).
+  font-size: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--dp-font-family-base);
+  font-size: var(--dp-font-size-body);
+  line-height: var(--dp-line-height-base);
+  color: var(--dp-color-on-surface);
+  background-color: var(--dp-color-surface);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3 {
+  line-height: var(--dp-line-height-tight);
+  font-weight: var(--dp-font-weight-bold);
+  margin: 0 0 var(--dp-space-3);
+}
+
+h1 {
+  font-size: var(--dp-font-size-headline);
+}
+
+h2 {
+  font-size: var(--dp-font-size-title);
+}
+
+h3 {
+  font-size: var(--dp-font-size-subtitle);
+}
+
+a {
+  color: var(--dp-color-accent);
+}
+
+// ---------------------------------------------------------------------------
+// Accessible focus indicator (WCAG 2.4.7) — visible only for keyboard users,
+// driven by a high-contrast token so it survives a brand retune.
+// ---------------------------------------------------------------------------
+:focus-visible {
+  outline: 3px solid var(--dp-color-focus-ring);
+  outline-offset: 2px;
+  border-radius: var(--dp-radius-sm);
+}
+
+// ---------------------------------------------------------------------------
+// Skip link (WCAG 2.4.1 — bypass blocks). Both the consumer and operator shells
+// render `<a class="dp-skip-link">` as their first child; the styling is a global
+// landmark pattern (parked off-screen until focused), so it lives here once rather
+// than being duplicated into each shell's encapsulated styles.
+// ---------------------------------------------------------------------------
+.dp-skip-link {
+  position: absolute;
+  left: var(--dp-space-2);
+  // Parked one top-bar height above the viewport until focused.
+  top: calc(-1 * var(--dp-layout-topbar-height));
+  z-index: var(--dp-z-modal);
+  padding: var(--dp-space-2) var(--dp-space-4);
+  background-color: var(--dp-color-surface);
+  color: var(--dp-color-on-surface);
+  border-radius: var(--dp-radius-sm);
+  box-shadow: var(--dp-elevation-2);
+  transition: top var(--dp-motion-fast) var(--dp-motion-emphasized);
+}
+
+.dp-skip-link:focus-visible {
+  top: var(--dp-space-2);
+}
+
+// Honor reduced-motion preference (WCAG 2.3.3 / motion sensitivity).
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+// Screen-reader-only utility (visually hidden, still announced).
+.dp-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

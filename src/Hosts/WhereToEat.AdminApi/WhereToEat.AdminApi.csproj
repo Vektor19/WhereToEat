@@ -32,6 +32,13 @@
          endpoints manage Verified/ads under the same admin-only policy. -->
     <ProjectReference Include="..\..\Modules\Monetization\WhereToEat.Monetization.Application\WhereToEat.Monetization.Application.csproj" />
     <ProjectReference Include="..\..\Modules\Monetization\WhereToEat.Monetization.Infrastructure\WhereToEat.Monetization.Infrastructure.csproj" />
+    <!-- Step 23: the Analytics module supplies the aggregates-only IAnalyticsRollupReader the §7.5
+         operator-dashboard read endpoints read. As a Host this is the place allowed to compose another
+         module's Application + Infrastructure; the dashboard endpoints below run under the same
+         admin-only policy. Only the read path is wired (AddAnalyticsReadModule) — the admin host never
+         ingests events. -->
+    <ProjectReference Include="..\..\Modules\Analytics\WhereToEat.Analytics.Application\WhereToEat.Analytics.Application.csproj" />
+    <ProjectReference Include="..\..\Modules\Analytics\WhereToEat.Analytics.Infrastructure\WhereToEat.Analytics.Infrastructure.csproj" />
     <ProjectReference Include="..\..\Shared\WhereToEat.BuildingBlocks.Auth\WhereToEat.BuildingBlocks.Auth.csproj" />
     <ProjectReference Include="..\..\Shared\WhereToEat.Contracts\WhereToEat.Contracts.csproj" />
     <!-- Step 13 cross-cutting: Redis cache, MassTransit bus, observability (logging/correlation/OTel). -->

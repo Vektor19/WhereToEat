@@ -1,0 +1,170 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "cli": {
+    "packageManager": "npm",
+    "analytics": false
+  },
+  "newProjectRoot": "projects",
+  "projects": {
+    "app": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "projects/app",
+      "sourceRoot": "projects/app/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:application",
+          "options": {
+            "browser": "projects/app/src/main.ts",
+            "tsConfig": "projects/app/tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "stylePreprocessorOptions": {
+              "includePaths": ["projects/app/src/styles"]
+            },
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "projects/app/public"
+              }
+            ],
+            "styles": ["projects/app/src/styles.scss"]
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "700kB",
+                  "maximumError": "1MB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kB",
+                  "maximumError": "8kB"
+                }
+              ],
+              "outputHashing": "all",
+              "fileReplacements": [
+                {
+                  "replace": "projects/app/src/environments/environment.ts",
+                  "with": "projects/app/src/environments/environment.prod.ts"
+                }
+              ]
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            },
+            "test": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "polyfills": ["@angular/compiler"]
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular/build:dev-server",
+          "options": {
+            "proxyConfig": "proxy.conf.json"
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "app:build:production"
+            },
+            "development": {
+              "buildTarget": "app:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "buildTarget": "app:build:test",
+            "providersFile": "projects/app/src/test-providers.ts"
+          },
+          "configurations": {
+            "coverage": {
+              "coverage": true,
+              "coverageReporters": ["text-summary", "lcovonly"],
+              "coverageExclude": [
+                "**/*.spec.ts",
+                "**/test-providers.ts",
+                "**/environments/**",
+                "**/main.ts"
+              ],
+              "coverageThresholds": {
+                "statements": 80,
+                "branches": 75,
+                "functions": 70,
+                "lines": 80
+              }
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": ["projects/app/**/*.ts", "projects/app/**/*.html"],
+            "eslintConfig": "projects/app/eslint.config.js"
+          }
+        }
+      }
+    },
+    "core": {
+      "projectType": "library",
+      "root": "projects/core",
+      "sourceRoot": "projects/core/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:ng-packagr",
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/core/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/core/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "tsConfig": "projects/core/tsconfig.spec.json"
+          },
+          "configurations": {
+            "coverage": {
+              "coverage": true,
+              "coverageReporters": ["text-summary", "lcovonly"],
+              "coverageExclude": ["**/*.spec.ts", "**/public-api.ts", "**/index.ts"],
+              "coverageThresholds": {
+                "statements": 90,
+                "branches": 85,
+                "functions": 95,
+                "lines": 90
+              }
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": ["projects/core/**/*.ts", "projects/core/**/*.html"],
+            "eslintConfig": "projects/core/eslint.config.js"
+          }
+        }
+      }
+    }
+  }
+}

@@ -46,6 +46,31 @@ public static class AnalyticsInfrastructureServiceCollectionExtensions
     }
 
     /// <summary>
+    /// Adds the analytics <b>read</b> path only — the shared SQL connection factory plus the
+    /// aggregates-only <see cref="IAnalyticsRollupReader"/> seam (invariant #11). It deliberately wires
+    /// <b>none</b> of the ingest/anonymizer stack (writer, salt provider, anonymizer, ingest handler):
+    /// the dashboard-reading host (the Admin host) never ingests events, it only reads grouped
+    /// aggregates back. This mirrors how the module keeps its parts independently registrable
+    /// (<see cref="AddAnalyticsPersistence"/> vs <see cref="AddAnalyticsModule"/>): a host that needs the
+    /// rollup reader without the write path registers just this.
+    /// </summary>
+    public static IServiceCollection AddAnalyticsReadModule(this IServiceCollection services, string connectionString)
+    {
+        ArgumentNullException.ThrowIfNull(services);
+        if (string.IsNullOrWhiteSpace(connectionString))
+        {
+            throw new ArgumentException("A SQL connection string is required.", nameof(connectionString));
+        }
+
+        // The connection factory may already be registered by another module's AddXxxModule; TryAdd
+        // keeps a single factory for the host.
+        services.TryAddSingleton<ISqlConnectionFactory>(_ => new SqlConnectionFactory(connectionString));
+        services.AddScoped<IAnalyticsRollupReader, AnalyticsRollupReader>();
+
+        return services;
+    }
+
+    /// <summary>
     /// Wires the full Analytics ingest module against <paramref name="connectionString"/>, with optional
     /// <paramref name="configureOptions"/> for the geohash precision / salt-rotation window / master
     /// secret (privacy-safe defaults applied when omitted).

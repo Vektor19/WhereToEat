@@ -43,4 +43,33 @@ internal static class RatingsSql
             INSERT (RestaurantId, ScoreSum, ScoreCount)
             VALUES (@RestaurantId, @ScoreSum, @ScoreCount);
         """;
+
+    // ---- Write side (Step 21): the raw per-user Rating fact behind IRatingRepository ----------------
+    // The submit use-case looks up an existing rating (revise-vs-create) and then inserts or updates a
+    // single row. The unique constraint UQ_Rating_Restaurant_User guarantees at most one row per
+    // (RestaurantId, UserId) — revising updates that row, never adds a second (one rating per user per
+    // restaurant, invariant #6). Only the opaque Guids + score + timestamp are stored (no PII, #11).
+
+    // Find the row for one user's rating of one restaurant (the revise-vs-create decision input).
+    internal const string SelectRatingByRestaurantAndUser =
+        """
+        SELECT Id, RestaurantId, UserId, Score, GivenAt
+        FROM ratings.Rating
+        WHERE RestaurantId = @RestaurantId AND UserId = @UserId;
+        """;
+
+    // Insert a brand-new rating fact (the user had none for this restaurant).
+    internal const string InsertRating =
+        """
+        INSERT INTO ratings.Rating (Id, RestaurantId, UserId, Score, GivenAt)
+        VALUES (@Id, @RestaurantId, @UserId, @Score, @GivenAt);
+        """;
+
+    // Revise an existing rating in place (same row, keyed by its Id): overwrite score + timestamp.
+    internal const string UpdateRating =
+        """
+        UPDATE ratings.Rating
+        SET Score = @Score, GivenAt = @GivenAt
+        WHERE Id = @Id;
+        """;
 }

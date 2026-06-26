@@ -1,0 +1,81 @@
+// =============================================================================
+// Angular Material 3 theme — DERIVED from the design tokens in `_tokens.scss`.
+//
+// The Material colour/typography/density system is generated from a brand
+// palette, and then its high-level system tokens are *re-pointed at our design
+// tokens* via `mat.theme-overrides`. The result: Material components render in
+// our palette/typography, and retuning the brand stays a `_tokens.scss` change.
+// No component template references a raw hex/spacing literal — they use either a
+// `var(--dp-*)` token or a Material system token that resolves to one here.
+//
+// `mat.theme` emits CSS custom properties (system tokens), which is exactly the
+// token-driven, retune-without-recompile model the design doc asks for.
+// =============================================================================
+
+@use '@angular/material' as mat;
+
+html {
+  // Generate the M3 system tokens from a brand-aligned palette. The amber brand
+  // is closest to Material's azure-tinted warm ramps; the exact role colours are
+  // then overridden below from our own tokens, so the palette choice here is only
+  // the structural seed.
+  @include mat.theme(
+    (
+      color: (
+        theme-type: light,
+        primary: mat.$azure-palette,
+        tertiary: mat.$blue-palette,
+      ),
+      typography: (
+        plain-family: 'Inter, "Segoe UI", system-ui, sans-serif',
+        brand-family: 'Inter, "Segoe UI", system-ui, sans-serif',
+        bold-weight: 700,
+        medium-weight: 500,
+        regular-weight: 400,
+      ),
+      density: 0,
+    )
+  );
+
+  // Re-point Material's system colour tokens at our semantic design tokens, so
+  // every themed component (buttons, cards, chips, dialogs, form fields…) paints
+  // in the DePoisty palette and a brand change in `_tokens.scss` flows through.
+  @include mat.theme-overrides(
+    (
+      primary: var(--dp-color-primary),
+      on-primary: var(--dp-color-on-primary),
+      primary-container: var(--dp-color-primary-container),
+      on-primary-container: var(--dp-color-on-primary-container),
+      secondary: var(--dp-color-accent),
+      on-secondary: var(--dp-color-on-accent),
+      // Container roles MUST be re-pointed too — M3 generates them from the seed
+      // palette otherwise, leaking azure into e.g. selected MatChip
+      // (secondary-container + on-secondary-container).
+      secondary-container: var(--dp-color-accent-container),
+      on-secondary-container: var(--dp-color-on-accent-container),
+      tertiary: var(--dp-color-accent),
+      on-tertiary: var(--dp-color-on-accent),
+      tertiary-container: var(--dp-color-accent-container),
+      on-tertiary-container: var(--dp-color-on-accent-container),
+      surface: var(--dp-color-surface),
+      on-surface: var(--dp-color-on-surface),
+      surface-variant: var(--dp-color-surface-variant),
+      on-surface-variant: var(--dp-color-on-surface-variant),
+      background: var(--dp-color-surface),
+      on-background: var(--dp-color-on-surface),
+      outline: var(--dp-color-outline),
+      outline-variant: var(--dp-color-outline-variant),
+      error: var(--dp-color-error),
+      on-error: var(--dp-color-on-error),
+      // Error container roles (e.g. MatFormField error hover paints from
+      // on-error-container) — re-pointed so they resolve to our tokens, not azure.
+      error-container: var(--dp-color-error-container),
+      on-error-container: var(--dp-color-on-error-container),
+      corner-medium: var(--dp-radius-md),
+      corner-large: var(--dp-radius-lg),
+    )
+  );
+
+  // Material density / ripple baseline used by interactive components.
+  color-scheme: light;
+}
